@@ -1,0 +1,59 @@
+.input {
+    border: 1px solid #ccc;
+    outline: none;
+    border-radius: .3rem;
+    background: transparent;
+    padding: .3rem .3rem;
+}
+
+.input__unit {
+    margin: .51rem 0;
+}
+
+.input__unit > label, input {
+    display: block;
+    text-align: left;
+}
+
+.input__unit > input {
+    width: 100%;
+}
+
+.input__unit input,
+.input__unit .password {
+    color: var(--dark-color);
+}
+
+.password__container {
+    border: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    border-radius: .3rem;
+    justify-content: space-between;
+    position: relative;
+
+}
+
+.password__container > .password {
+    background: transparent;
+    border: none;
+    width: 100%;
+}
+
+.password__container > svg {
+    cursor: pointer;
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+}
+
+.profile__pic {
+    border: 1px solid #ccc;
+}
+
+.error__message {
+    font-size: .66rem;
+    color: var(--red-color);
+    text-align: left;
+}

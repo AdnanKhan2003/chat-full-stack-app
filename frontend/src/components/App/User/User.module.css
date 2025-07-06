@@ -1,0 +1,27 @@
+.results__user__container {
+    display: flex;
+    padding: .7rem 0;
+    cursor: pointer;
+}
+
+.results__user__container:hover {
+    background-color: azure;
+}
+
+.user__profile__pic {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    cursor: pointer;
+    margin-left: .81rem;
+    margin-right: .6rem;
+    align-self: center;
+}
+
+.results__content h5 {
+    font-size: .9rem;
+}
+
+.results__content p {
+    font-size: .8rem;
+}

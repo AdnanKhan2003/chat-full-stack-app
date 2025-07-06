@@ -1,0 +1,37 @@
+.sidebar__container {
+    max-width: 340px;
+    width: 100%;
+    background-color: var(--light-variant-color-2);
+    margin-top: .54rem;
+    border-radius: .3rem;
+    min-height: 550px;
+    height: 100%;
+    padding: 1rem 1rem;
+}
+
+.chat__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1rem;
+}
+
+.chat__header > h3 {
+    color: var(--dark-color);
+}
+
+.chat__header > button {
+    font-size: 1rem;
+    padding: .3rem .7rem;
+    cursor: pointer;
+}
+
+.chats__container {
+    padding: 1rem 0;
+}
+
+@media (max-width: 650px) {
+    .sidebar__container {
+        max-width: 100%;
+    }
+}

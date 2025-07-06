@@ -1,0 +1,14 @@
+.app {
+  min-height: 970px;
+}
+
+.app__content {
+  display: flex;
+  align-items: flex-start;
+}
+
+@media (max-width: 650px) {
+  .app__content {
+    display: block;
+  }
+}

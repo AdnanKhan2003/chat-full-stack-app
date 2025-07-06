@@ -1,0 +1,22 @@
+.chat__container {
+    color: var(--dark-color);
+    display: flex;
+    align-items: flex-start;
+    border-radius: .3rem;
+    padding: .4rem .37rem;
+    cursor: pointer;
+}
+
+.chat__profile__pic {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    margin-left: .81rem;
+    margin-right: .6rem;
+    align-self: center;
+} 
+
+.active {
+    background-color: antiquewhite;
+}

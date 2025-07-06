@@ -1,0 +1,79 @@
+ {/* <div className={`${styles.input__unit}`}>
+          <label className="name">Name</label>
+          <input
+            className={`${styles.input}`}
+            type="name"
+            name="name"
+            onChange={(e) => handleChange("name", e)}
+          />
+          {errors.name && (
+            <p className={`${styles.error__message}`}>{errors.name}</p>
+          )}
+        </div> */}
+        {/* <div className={`${styles.input__unit}`}>
+          <label className="email">Email</label>
+          <input className={`${styles.input}`} type="email" name="email" onChange={(e) => handleChange('email', e)} />
+          {
+            errors.email &&
+          <p className={`${styles.error__message}`}>{errors.email}</p>
+          }
+        </div> */}
+        {/* <div className={`${styles.input__unit}`}>
+          <label className="password">Password</label>
+          <div className={`${styles.password__container}`}>
+            <input
+              className={`${styles.password} ${styles.input}`}
+              type={!isPasswordVisible.password ? "password" : "text"}
+              name="password"
+              onChange={(e) => handleChange("password", e)}
+            />
+
+            <FaRegEye
+              onClick={(e) =>
+                setIsPasswordVisible((prevState) => ({
+                  ...prevState,
+                  password: !prevState.password,
+                }))
+              }
+            />
+          </div>
+          {errors.password && (
+            <p className={`${styles.error__message}`}>{errors.password}</p>
+          )}
+        </div> */}
+        {/* <div className={`${styles.input__unit}`}>
+          <label className="confirm-password">Confirm Password</label>
+          <div className={`${styles.password__container}`}>
+            <input
+              className={`${styles.password} ${styles.input}`}
+              type={!isPasswordVisible.confirmPassword ? "password" : "text"}
+              name="confirm-password"
+              onChange={(e) => handleChange("confirmPassword", e)}
+            />
+
+            <FaRegEye
+              onClick={(e) =>
+                setIsPasswordVisible((prevState) => ({
+                  ...prevState,
+                  confirmPassword: !prevState.confirmPassword,
+                }))
+              }
+            />
+          </div>
+          {errors.confirmPassword && (
+            <p className={`${styles.error__message}`}>
+              {errors.confirmPassword}
+            </p>
+          )}
+        </div> */}
+        {/* <div className={`${styles.input__unit}`}>
+          <label className="profile__pic">Profile Picture</label>
+          <input
+            className={`${styles.profile__pic} ${styles.input}`}
+            type="file"
+            accept="image/*"
+            name="profile-pic"
+            onChange={(e) => handleChange("profilePic", e)}
+            id=""
+          />
+        </div> */}

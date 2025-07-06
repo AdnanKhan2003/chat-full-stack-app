@@ -1,0 +1,19 @@
+.message__container {
+    display: flex;
+    align-items: flex-end;
+    margin: 1rem 0;
+}
+
+.message__profile__pic {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    margin-right: .51rem;
+}
+
+.message {
+    background: rgb(170, 197, 180);
+    padding: .3rem .7rem;
+    border-radius: .3rem;
+    font-size: .81rem;
+}
