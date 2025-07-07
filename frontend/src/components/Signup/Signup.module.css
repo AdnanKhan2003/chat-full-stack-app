@@ -65,6 +65,12 @@
     font-weight: 600;
 }
 
+.btn__signup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .btn__guest {
     margin-top: .45rem;
     background-color: indianred;

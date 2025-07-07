@@ -15,3 +15,8 @@ export const generateToken = (userId, res) => {
 
     return token;
 }
+
+export const capitalizeFirstLetter = (string) => {
+    if(typeof string !== 'string') return false;
+    return string[0].toUpperCase() + string.slice(1).toLowerCase(); 
+};

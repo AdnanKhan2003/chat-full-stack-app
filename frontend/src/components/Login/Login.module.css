@@ -59,6 +59,13 @@
     padding: .58rem .7rem;
     box-shadow: 0 0 0px rgba(0, 0, 0, .1);
     font-weight: 600;
+    text-align: center;
+}
+
+.btn__login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .btn__guest {

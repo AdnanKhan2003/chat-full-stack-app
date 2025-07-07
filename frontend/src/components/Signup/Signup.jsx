@@ -3,16 +3,19 @@ import { FaRegEye } from "react-icons/fa";
 import styles from "./Signup.module.css";
 import { useState } from "react";
 import { compareString, isEmail, isEmpty } from "../../lib/utils";
-import Input from "../../ui/Input/Input";
+import Input from "../../components/Input/Input.jsx";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { checkAuthThunk } from "../../store/thunks/authThunk.js";
-import Toast from "../Toast/Toast.jsx";
+import Toast from "../../ui/Toast/Toast.jsx";
 import { showToast } from "../../lib/toast.js";
+import { useFetch } from "../../hooks/useFetch";
+import Spinner from '../../ui/Spinner/Spinner';
 
 const Signup = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { fetchData, data, isLoading, error } = useFetch();
 
   const [isPasswordVisible, setIsPasswordVisible] = useState({
     password: false,
@@ -109,20 +112,24 @@ const Signup = () => {
     console.log(isValid);
     console.log(formInputData);
 
-    const req = await fetch("http://localhost:3000/api/auth/signup", {
+    if (!isValid) {
+      showToast({
+        type: "error",
+        title: "Invalid Credentials!",
+        message: "Please Enter Valid Data!",
+        duration: 3000,
+        show: true,
+        position: "top",
+      });
+      return;
+    }
+
+    const res = await fetchData("http://localhost:3000/api/auth/signup", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
       body: JSON.stringify(formInputData),
-      credentials: "include",
     });
 
-    console.log(req);
-
-    const res = await req.json();
-
-    if (req.ok) {
+    if (res) {
       dispatch(checkAuthThunk());
       showToast({
         type: "success",
@@ -130,18 +137,17 @@ const Signup = () => {
         message: "Welcome, We're Glad to have you here!",
         duration: 3000,
         show: true,
-        position: 'top'
+        position: "top",
       });
       navigate("/");
     } else {
-      console.log(res);
       showToast({
         type: "error",
         title: "Signup Failed!",
         message: "Please Enter Valid Data!",
         duration: 3000,
         show: true,
-        position: 'top'
+        position: "top",
       });
     }
   };
@@ -211,12 +217,15 @@ const Signup = () => {
         />
         <div className={`${styles.btn__container}`}>
           <button className={`${styles.btn__signup}`} type="submit">
-            Sign Up
+            {isLoading ? <Spinner /> : 'Sign Up'}
           </button>
-          <button 
-          onClick={() => navigate('/login')}
-           className={`${styles.btn__guest}`}
-           type="button">Get Guest Login</button>
+          <button
+            onClick={() => navigate("/login")}
+            className={`${styles.btn__guest}`}
+            type="button"
+          >
+            Get Guest Login
+          </button>
         </div>
       </form>
     </div>

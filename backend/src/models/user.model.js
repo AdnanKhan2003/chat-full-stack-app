@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 
+import { capitalizeFirstLetter } from '../lib/utils.js';
+
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
@@ -27,5 +29,12 @@ const userSchema = new Schema({
 }, 
 { timestamps: true }
 );
+
+userSchema.pre('save', function (next) {
+    if(this.name){
+        this.name = capitalizeFirstLetter(this.name);
+    }
+    next();
+});
 
 export default mongoose.model('User', userSchema);

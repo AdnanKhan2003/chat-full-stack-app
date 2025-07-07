@@ -10,6 +10,15 @@
     border-top-right-radius: .3rem;
     border-bottom-right-radius: .3rem;
     padding: 2rem 1rem;
+
+    transform: translateX(-100%);
+    opacity: 0;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.show {
+    transform: translateX(0);
+    opacity: 1;
 }
 
 .searchbox__header {
@@ -34,7 +43,7 @@
 
 .searchbox__input > input {
     width: 100%;
-    
+    outline: none;
 }
 
 .searchbox__input > button {

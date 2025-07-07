@@ -12,7 +12,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import LoginPage from './pages/LoginPage/LoginPage'
 import SearchBox from './components/App/SearchBox/SearchBox'
 import { hideToast, showToast, initialToastState, toastReducer, registerDispatch } from './lib/toast'
-import Toast from './components/Toast/Toast'
+import Toast from './ui/Toast/Toast'
+import Spinner from './ui/Spinner/Spinner'
 
 
 
@@ -38,7 +39,7 @@ function App() {
   }, [toastState.show]);
   
   if(isLoading) {
-    return <h1>Loading...</h1>
+    return <Spinner />
   }
 
   const router = createBrowserRouter([

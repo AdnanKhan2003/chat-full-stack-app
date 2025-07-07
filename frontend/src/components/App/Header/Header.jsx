@@ -8,27 +8,22 @@ import { useNavigate } from "react-router-dom";
 import { checkAuthThunk } from "../../../store/thunks/authThunk";
 import { useDispatch } from "react-redux";
 import { showToast } from "../../../lib/toast";
+import { useFetch } from "../../../hooks/useFetch";
 
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [showProfileOptions, setShowProfileOptions] = useState(false);
+  const { fetchData, data, isLoading, error } = useFetch();
 
   const handleLogout = async (e) => {
     e.preventDefault();
 
-    try {
-      const res = await fetch("http://localhost:3000/api/auth/logout", {
-        method: "POST",
-        credentials: "include",
-      });
+    const res = await fetchData("http://localhost:3000/api/auth/logout", {
+      method: "POST",
+    });
 
-      if (!res.ok) {
-        throw new Error("Logout User Failed!");
-      }
-
-      const data = res.json();
-      console.log(data.message);
+    if (res) {
       setShowProfileOptions(false);
       dispatch(checkAuthThunk());
       showToast({
@@ -40,8 +35,7 @@ const Header = () => {
         position: "top",
       });
       navigate("/login");
-    } catch (err) {
-      console.log(err);
+    } else {
       showToast({
         type: "error",
         title: "Logout Failed`!",
@@ -62,6 +56,7 @@ const Header = () => {
             <input
               type="search"
               name="searchUsers"
+              readOnly
               onClick={() => navigate("/search")}
               placeholder="Search Users.."
             />

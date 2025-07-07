@@ -4,9 +4,11 @@ import { useDispatch } from "react-redux";
 import styles from "./Login.module.css";
 import { useState } from "react";
 import { compareString, isEmail, isEmpty } from "../../lib/utils";
-import Input from "../../ui/Input/Input";
+import Input from "../../components/Input/Input.jsx";
+import Spinner from '../../ui/Spinner/Spinner';
 import { checkAuthThunk } from "../../store/thunks/authThunk.js";
 import { showToast } from "../../lib/toast.js";
+import { useFetch } from "../../hooks/useFetch.js";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -14,6 +16,7 @@ const Login = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState({
     password: false,
   });
+  const { data, isLoading, error, fetchData } = useFetch();
 
   const [errors, setErrors] = useState({
     email: "",
@@ -63,25 +66,12 @@ const Login = () => {
     const isValid = handleValidation();
     console.log(isValid, formInputData);
 
-    try {
-      const res = await fetch("http://localhost:3000/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formInputData),
-        credentials: "include",
-      });
+    const res = await fetchData("http://localhost:3000/api/auth/login", {
+      method: 'POST',
+      body: JSON.stringify(formInputData)
+    });
 
-      if (!res.ok) {
-        console.log(res);
-
-        throw new Error("User Login Failed!");
-      }
-
-      const data = await res.json();
-
-      console.log(data);
+    if(res) {
       dispatch(checkAuthThunk());
       showToast({
         type: "success",
@@ -94,8 +84,7 @@ const Login = () => {
       console.log(data);
 
       navigate("/");
-    } catch (err) {
-      console.log(err.message);
+    } else {
       showToast({
         type: "error",
         title: "Login Failed!",
@@ -164,7 +153,7 @@ const Login = () => {
         />
         <div className={`${styles.btn__container}`}>
           <button className={`${styles.btn__login}`} type="submit">
-            Login
+            {isLoading ? <Spinner /> : "Login"}
           </button>
           <button onClick={getGuestCredentials} className={`${styles.btn__guest}`} type="button">
             Get Guest Login Credentials
