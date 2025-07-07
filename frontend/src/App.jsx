@@ -5,12 +5,14 @@ import Header from './components/App/Header/Header'
 import Sidebar from './components/App/Sidebar/Sidebar'
 import HomePage from './pages/HomePage/HomePage'
 import { RouterProvider } from 'react-router-dom'
-import { useEffect } from 'react'
-import { checkAuth } from './store/thunks/authThunk'
+import { useEffect, useReducer } from 'react'
+import { checkAuthThunk } from './store/thunks/authThunk'
 import SignupPage from './pages/SignupPage/SignupPage'
 import { useDispatch, useSelector } from 'react-redux'
 import LoginPage from './pages/LoginPage/LoginPage'
 import SearchBox from './components/App/SearchBox/SearchBox'
+import { hideToast, showToast, initialToastState, toastReducer, registerDispatch } from './lib/toast'
+import Toast from './components/Toast/Toast'
 
 
 
@@ -18,11 +20,22 @@ function App() {
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state) => state.isAuth);
   const isAuth = useSelector(state => state.isAuth.user);
+  const [ toastState, toastDispatch ] = useReducer(toastReducer, initialToastState);
 
+  registerDispatch(toastDispatch);
+  
+  useEffect(() => {
+    dispatch(checkAuthThunk());
+  }, [dispatch]);
 
   useEffect(() => {
-    dispatch(checkAuth());
-  }, [dispatch]);
+    const timer = setTimeout(() => {
+      hideToast();
+    }, toastState.duration);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [toastState.show]);
   
   if(isLoading) {
     return <h1>Loading...</h1>
@@ -51,7 +64,20 @@ function App() {
 
 
   return (
+    <>
         <RouterProvider router={router} />
+        {toastState.show &&
+          <Toast 
+          type={toastState.type}
+          title={toastState.title}
+          message={toastState.message}
+          duration={toastState.duration}
+          show={toastState.show}
+          position={toastState.position}
+          onClose={hideToast}
+          />
+        }
+    </>
   );
 }
 

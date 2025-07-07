@@ -2,20 +2,18 @@ import { useEffect, useRef, useState } from 'react';
 import styles from './SearchBox.module.css';
 import { useNavigate } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUsers } from '../../../store/thunks/getUsersThunk';
 import User from '../User/User';
 
 const SearchBox = () => {
     const [userName, setUserName] = useState("");
     const searchBoxEle = useRef();
     const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const users = useSelector(state => state.getUsers.users);
 
     const handleSearchUser = async (e) => {
         e.preventDefault();
         
-        dispatch(getUsers(userName));     
+        console.log(userName);
+        
     };
 
     useEffect(() => {
@@ -47,9 +45,7 @@ const SearchBox = () => {
         </form>
 
         <div className="search__results__container">
-            {users.length > 0 ? users.map(user => <User key={user._id} data={user} />) :
-            <p>Search Users</p>
-            }
+            <User />
             {/* <div className={`${styles.results__user__container}`}>
                 <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" className={`${styles.user__profile__pic}`} />
                 <div className="results__content">

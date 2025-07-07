@@ -5,8 +5,9 @@ import { FaBell } from "react-icons/fa";
 import styles from "./Header.module.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { checkAuth } from "../../../store/thunks/authThunk";
-import { useDispatch } from 'react-redux';
+import { checkAuthThunk } from "../../../store/thunks/authThunk";
+import { useDispatch } from "react-redux";
+import { showToast } from "../../../lib/toast";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -16,21 +17,40 @@ const Header = () => {
   const handleLogout = async (e) => {
     e.preventDefault();
 
+    try {
+      const res = await fetch("http://localhost:3000/api/auth/logout", {
+        method: "POST",
+        credentials: "include",
+      });
 
-    const res = await fetch('http://localhost:3000/api/auth/logout', {
-      method: 'POST',
-      credentials: 'include'
-    });
+      if (!res.ok) {
+        throw new Error("Logout User Failed!");
+      }
 
-    if(!res.ok) {
-      throw new Error("Logout User Failed!");
+      const data = res.json();
+      console.log(data.message);
+      setShowProfileOptions(false);
+      dispatch(checkAuthThunk());
+      showToast({
+        type: "success",
+        title: "Logout Sucessful!",
+        message: "We would Love to See You Again!",
+        duration: 3000,
+        show: true,
+        position: "top",
+      });
+      navigate("/login");
+    } catch (err) {
+      console.log(err);
+      showToast({
+        type: "error",
+        title: "Logout Failed`!",
+        message: "Please Try Again!",
+        duration: 3000,
+        show: true,
+        position: "top",
+      });
     }
-
-    const data = res.json();
-    console.log(data.message);
-    setShowProfileOptions(false);    
-    dispatch(checkAuth());
-    navigate('/login');
   };
 
   return (

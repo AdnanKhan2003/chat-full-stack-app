@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { checkAuth } from '../thunks/authThunk'
+import { checkAuthThunk } from '../thunks/authThunk'
 
 const initialState = {
   user: null,
@@ -13,16 +13,16 @@ export const authSlice = createSlice({
   reducers: {
   },
   extraReducers: (builder) => {
-    builder.addCase(checkAuth.pending, (state) => {
+    builder.addCase(checkAuthThunk.pending, (state) => {
         state.isLoading = true;
         state.error = null;
     })
-    .addCase(checkAuth.fulfilled, (state, action) => {
+    .addCase(checkAuthThunk.fulfilled, (state, action) => {
       
         state.user = action.payload;
         state.isLoading = false;
     })
-    .addCase(checkAuth.rejected, (state, action) => {
+    .addCase(checkAuthThunk.rejected, (state, action) => {
       
       state.user = null;
       state.error = action.payload;      

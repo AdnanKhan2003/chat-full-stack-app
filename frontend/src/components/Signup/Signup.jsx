@@ -4,14 +4,16 @@ import styles from "./Signup.module.css";
 import { useState } from "react";
 import { compareString, isEmail, isEmpty } from "../../lib/utils";
 import Input from "../../ui/Input/Input";
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { checkAuth } from '../../store/thunks/authThunk.js';
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { checkAuthThunk } from "../../store/thunks/authThunk.js";
+import Toast from "../Toast/Toast.jsx";
+import { showToast } from "../../lib/toast.js";
 
 const Signup = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
+
   const [isPasswordVisible, setIsPasswordVisible] = useState({
     password: false,
     confirmPassword: false,
@@ -106,25 +108,41 @@ const Signup = () => {
     const isValid = handleValidation();
     console.log(isValid);
     console.log(formInputData);
-    
-    const req = await fetch('http://localhost:3000/api/auth/signup', {
-      method: 'POST',
+
+    const req = await fetch("http://localhost:3000/api/auth/signup", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(formInputData),
-      credentials: "include"
+      credentials: "include",
     });
 
     console.log(req);
-    
+
     const res = await req.json();
-    
-    if(req.ok) {
-      dispatch(checkAuth())
-      navigate('/')
+
+    if (req.ok) {
+      dispatch(checkAuthThunk());
+      showToast({
+        type: "success",
+        title: "Signup Sucessful!",
+        message: "Welcome, We're Glad to have you here!",
+        duration: 3000,
+        show: true,
+        position: 'top'
+      });
+      navigate("/");
     } else {
       console.log(res);
+      showToast({
+        type: "error",
+        title: "Signup Failed!",
+        message: "Please Enter Valid Data!",
+        duration: 3000,
+        show: true,
+        position: 'top'
+      });
     }
   };
 
@@ -139,8 +157,18 @@ const Signup = () => {
         className={`${styles.signup__form}`}
       >
         <div className={`${styles.auth__options}`}>
-          <p onClick={() => navigate('/signup')} className={`${styles.form__signup}`}>Sign Up</p>
-          <p onClick={() => navigate('/login')} className={`${styles.form__login}`}>Login</p>
+          <p
+            onClick={() => navigate("/signup")}
+            className={`${styles.form__signup}`}
+          >
+            Sign Up
+          </p>
+          <p
+            onClick={() => navigate("/login")}
+            className={`${styles.form__login}`}
+          >
+            Login
+          </p>
         </div>
         <Input
           label="Name"
@@ -181,9 +209,15 @@ const Signup = () => {
           accept="image/*"
           onChange={handleChange}
         />
-        <button className={`${styles.btn__signup}`} type="submit">
-          Sign Up
-        </button>
+        <div className={`${styles.btn__container}`}>
+          <button className={`${styles.btn__signup}`} type="submit">
+            Sign Up
+          </button>
+          <button 
+          onClick={() => navigate('/login')}
+           className={`${styles.btn__guest}`}
+           type="button">Get Guest Login</button>
+        </div>
       </form>
     </div>
   );

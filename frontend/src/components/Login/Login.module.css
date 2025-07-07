@@ -45,8 +45,24 @@
     cursor: pointer;
 }
 
-.btn__signup {
-    width: 100%;
+.btn__container {
     margin-top: 1rem;
+}
+
+.btn__login,
+.btn__guest {
+    width: 100%;
     cursor: pointer;
+    background-color: lavender;
+    border: none;
+    border-radius: .3rem;
+    padding: .58rem .7rem;
+    box-shadow: 0 0 0px rgba(0, 0, 0, .1);
+    font-weight: 600;
+}
+
+.btn__guest {
+    margin-top: .45rem;
+    background-color: indianred;
+    color: var(--light-color);
 }

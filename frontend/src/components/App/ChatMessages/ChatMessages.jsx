@@ -8,7 +8,6 @@ import Message from './Message/Message.jsx';
 import styles from './ChatMessages.module.css';
 
 const ChatMessages = () => {
-  const { chatId } = useSelector(state => state.selectedChat);
   const [messages, setMessages] = useState([]);
   const [ messageInput, setMessageInput ] = useState("");
 
@@ -21,16 +20,6 @@ const ChatMessages = () => {
   
   };
 
-  if(chatId === "") {
-    return (
-      <div className={`${styles.chat__messages__container__none}`}>
-        <div className="chat__messages__content">
-          <h5>Select User to Get Started With Chatting!</h5>  
-          <p>Chat with your friends any Time any Where!</p>
-        </div>  
-      </div>
-    );
-  }
 
   return (
     <div className={`${styles.chat__messages__container}`}>

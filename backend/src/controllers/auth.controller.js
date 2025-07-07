@@ -52,7 +52,7 @@ export const postSignup = async (req, res, next) => {
       profilePic: result.profilePic,
     });
   } catch (err) {
-    const error = new Error("User Signup Failed!");
+    const error = new Error(err.message + "User Signup Failed!");
     error.status = err.status || 500;
     next(error);
   }

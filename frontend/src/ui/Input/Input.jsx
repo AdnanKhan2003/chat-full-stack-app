@@ -12,6 +12,7 @@ const Input = ({ label, errors, onChange, ...props }) => {
             className={`${styles.password} ${styles.input}`}
             name={props.name}
             type={!props.isPasswordVisible[props.name] ? "password" : "text"}
+            value={props.value}
             // onChange={(e) => handleChange("password", e)}
             onChange={(e) => onChange(props.name, e)}
           />
