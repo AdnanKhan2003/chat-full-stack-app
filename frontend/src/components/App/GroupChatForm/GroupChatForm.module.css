@@ -1,0 +1,47 @@
+
+.form__group {
+    margin: 1rem 0;
+}
+
+.form__inputs {
+    margin: 1rem 0;
+}
+
+.chatname__container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+input {
+    width: 100%;
+    max-width: 300px;
+    padding: .3rem .7rem;
+    outline: none;
+}
+
+.users__container {
+    display: flex;
+    width: 100%;
+}
+
+.users__input {
+    margin: 1rem 0 1.52rem 0;
+}
+
+.btn__close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: .55rem .75rem 0 0;
+    cursor: pointer;
+}
+
+.dialog__submit {
+    padding: .3rem .7rem;
+}
+
+.btn__update,
+.dialog__submit {
+    cursor: pointer;
+}

@@ -5,34 +5,40 @@ import { useDispatch, useSelector } from "react-redux";
 import { useFetch } from "../../../hooks/useFetch";
 import User from "../User/User";
 import Spinner from "../../../ui/Spinner/Spinner";
+import { chatThunk } from "../../../store/thunks/chatThunk";
 
 const SearchBox = () => {
   const [userName, setUserName] = useState("");
   const [isVisible, setIsVisible] = useState(false);
   const [hasSearched, setHasSearched] = useState();
   const { fetchData, data, isLoading, error } = useFetch();
+  const { chats } = useSelector(state => state.chats);
+
   const inputRef = useRef();
   const searchBoxEle = useRef();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
+
+  
   const handleSearchUser = async (e) => {
     e.preventDefault();
+
     setHasSearched(true);
+
     const res = await fetchData(
-      `http://localhost:3000/api/auth/users?search=${userName}`
+      `http://localhost:3000/api/auth/users?search=${userName.toLowerCase()}`
     );
+
+    // dispatch()
+    console.log(chats, res);
+    
   };
 
-  const accessChat = async (userId) => { 
-    console.log(userId);
-    
-    // const res = await fetchData('http://localhost:3000/api/chat', {
-    //     method: 'POST',
-    //     body: JSON.stingify(userId)
-    // })
-
-    // console.log(res);
-    
+  const accessChat = async (user) => {
+    const userId = user._id;
+    dispatch(chatThunk(userId));
+    navigate("/");
   };
 
   useEffect(() => {
@@ -67,12 +73,15 @@ const SearchBox = () => {
       </div>
 
       <form
-        onSubmit={handleSearchUser}
+        // onSubmit={handleSearchUser}
         className={`${styles.searchbox__input}`}
       >
         <input
           ref={inputRef}
-          onChange={(e) => setUserName(e.target.value)}
+          onChange={(e) => {
+            setUserName(e.target.value);
+            handleSearchUser(e);
+          }}
           value={userName}
           placeholder="Search By Name Or Email.."
           type="search"
@@ -83,14 +92,18 @@ const SearchBox = () => {
 
       <div className="search__results__container">
         {isLoading && <Spinner />}
+
         {hasSearched &&
           Array.isArray(data) &&
           data.length > 0 &&
           !isLoading &&
-          data.map((user) => <User key={user._id} onSelect={accessChat} data={user} />)}
+          data.map((user) => (
+            <User key={user._id} onSelect={accessChat} data={user} />
+          ))}
         {hasSearched && data && data.length === 0 && (
           <p>No Such User Exists!</p>
         )}
+
         {!hasSearched && !isLoading && <p>Search User By Name Or Email</p>}
       </div>
     </div>

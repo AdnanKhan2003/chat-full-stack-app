@@ -1,0 +1,18 @@
+.user {
+    display: flex;
+    align-items: center;
+    background-color: blanchedalmond;
+    padding: .1rem .51rem;
+    font-size: .8rem;
+    border-radius: .83rem;
+    width: fit-content;
+    margin-right: .34rem;
+    margin-bottom: 1rem;
+}
+
+.user > svg {
+    margin-left: .24rem;
+    cursor: pointer;
+    font-size: .78rem;
+    margin-bottom: .1rem;
+}

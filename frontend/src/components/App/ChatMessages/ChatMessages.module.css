@@ -11,6 +11,7 @@
     min-height: 550px;
     height: 100%;
     width: 100%;
+    position: relative;
     text-align: center;
     background-color: var(--blue-variant-color);
 }

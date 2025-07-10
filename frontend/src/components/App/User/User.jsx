@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router';
 
 const User = ({ data, onSelect }) => {
   return (
-    <div onClick={() => onSelect(data._id)} className={`${styles.results__user__container}`}>
+    <div onClick={() => onSelect(data)} className={`${styles.results__user__container}`}>
       <img
         src={data.profilePic}
         className={`${styles.user__profile__pic}`}

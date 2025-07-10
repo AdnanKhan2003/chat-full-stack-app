@@ -17,6 +17,7 @@
 
 .input__unit > input {
     width: 100%;
+    max-width: 650px;
 }
 
 .input__unit input,

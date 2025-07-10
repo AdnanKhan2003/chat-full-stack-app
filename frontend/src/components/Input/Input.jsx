@@ -6,7 +6,7 @@ const Input = ({ label, errors, onChange, ...props }) => {
   if (props.type === "password") {
     return (
       <div className={`${styles.input__unit}`}>
-        <label>{label}</label>
+        <label htmlFor={label.toLowerCase()}>{label}</label>
         <div className={`${styles.password__container}`}>
           <input
             className={`${styles.password} ${styles.input}`}
