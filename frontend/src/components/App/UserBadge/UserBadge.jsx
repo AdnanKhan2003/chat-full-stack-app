@@ -3,7 +3,6 @@ import { IoMdClose } from "react-icons/io";
 import styles from "./UserBadge.module.css";
 
 const UserBadge = ({ user, onRemove }) => {
-  console.log(user);
   
   return (
     <span className={`${styles.user}`}>

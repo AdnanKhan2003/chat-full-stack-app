@@ -7,12 +7,15 @@ import UserBadge from '../UserBadge/UserBadge';
 import styles from "./GroupChatForm.module.css";
 import { useNavigate } from "react-router";
 import { showToast } from "../../../lib/toast";
+import GroupChatEditForm from "./GroupChatEditForm/GroupChatEditForm";
+import { useSelector } from "react-redux";
 
-const GroupChatForm = ({ onClose, onSuccess }) => {
+const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
   const [chatNameInput, setChatNameInput] = useState("");
   const [usersInput, setUsersInput] = useState("");
   const [users, setUsers] = useState([]);
   const [userSearchResults, setUserSearchResults] = useState([]);
+  const { myChats, activeChat } = useSelector(state => state.chats);
   const { fetchData, data, isLoading, error } = useFetch();
 
   const navigate = useNavigate();
@@ -61,10 +64,36 @@ const GroupChatForm = ({ onClose, onSuccess }) => {
     navigate('/');
   };
 
-  const handleAddUsers = (user) => {
-    setUsers(prevState => [ ...prevState, user ]);
+  const handleEditGroupUsers = (user) => {
+    console.log(user, myChats, activeChat);
+    
+  };
+
+  const handleAddUsers = (userToAdd, editUser = false) => {
+    console.log(userToAdd);
+    
+    setUsers(prevState => {
+      const userExists = prevState.some(user => user._id == userToAdd._id);
+      if(userExists) {
+        showToast({
+          type: "error",
+          title: "User Already Exists!",
+          message: "Can't Add Existing User Again!",
+          duration: 3000,
+          show: true,
+          position: 'top'
+        });
+        return prevState;
+      }
+      return [ ...prevState, userToAdd ];
+    });
     setUsersInput('');
     setUserSearchResults([]);
+    console.log(users);
+    if(editUser) {
+      handleEditGroupUsers(userToAdd);
+    }
+    
   }
 
   const handleRemoveUser = (id) => {
@@ -95,8 +124,24 @@ const GroupChatForm = ({ onClose, onSuccess }) => {
     setUsersInput((prevState) => value);
 
 
-    setUserSearchResults(res);
+    setUserSearchResults(res);    
   };
+
+  if(edit) {
+    return (
+      <GroupChatEditForm 
+        onCreate={handleCreateGroup} 
+        onAddUser={handleAddUsers}
+        onRemoveUser={handleRemoveUser}
+        onChangeUser={handleChangeUsers}
+        usersInput={usersInput}
+        userSearchResults={userSearchResults}
+        onSuccess={onSuccess}
+        chatUsers={users}
+      />
+    );
+  }
+  
 
   return (
     <>
@@ -124,7 +169,6 @@ const GroupChatForm = ({ onClose, onSuccess }) => {
           <div className={`${styles.users__container}`}>
             {Array.isArray(users) && users.length > 0 && 
               users.map(user => {
-                console.log(user);
                 
                 return <UserBadge key={user._id} user={user} onRemove={handleRemoveUser} />
               } )

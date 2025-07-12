@@ -17,6 +17,7 @@ const Sidebar = () => {
     (state) => state.chats
   );
   const { user } = useSelector((state) => state.isAuth);
+  const { activeChat } = useSelector((state) => state.chats);
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
@@ -24,12 +25,15 @@ const Sidebar = () => {
   }, []);
 
   const handleGroupChatCreated = () => {
-    dispatch(myChatThunk());
+    dispatch(myChatThunk());    
+    console.log(myChats, activeChat);
+
   };
 
 
   const handleSelectedChat = (chat) => {
     dispatch(handleActiveChat(chat));
+    console.log(myChats, activeChat);
   };
 
   return (

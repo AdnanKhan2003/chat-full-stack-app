@@ -3,9 +3,9 @@ import { useDispatch } from 'react-redux';
 import styles from "./User.module.css";
 import { useNavigate } from 'react-router';
 
-const User = ({ data, onSelect }) => {
+const User = ({ data, onSelect, editUser = false }) => {
   return (
-    <div onClick={() => onSelect(data)} className={`${styles.results__user__container}`}>
+    <div onClick={() => onSelect(data, editUser)} className={`${styles.results__user__container}`}>
       <img
         src={data.profilePic}
         className={`${styles.user__profile__pic}`}

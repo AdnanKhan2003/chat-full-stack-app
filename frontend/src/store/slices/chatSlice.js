@@ -3,12 +3,14 @@ import { checkAuthThunk } from "../thunks/authThunk";
 import { chatThunk } from "../thunks/chatThunk";
 import { myChatThunk } from "../thunks/myChatThunk ";
 
+// REMOVED
+// chats: [],
+// groupChats: [],
+// selectedChat: "",
+
 const initialState = {
-  chats: [],
   myChats: [],
-  groupChats: [],
   users: [],
-  selectedChat: "",
   activeChat: "",
   isLoading: false,
   error: null,
@@ -55,6 +57,15 @@ export const chatSlice = createSlice({
     })
     .addCase(myChatThunk.fulfilled, (state, action) => {
       state.myChats = action.payload;
+
+      if(state.activeChat) {
+        const updatedChat = action.payload.find(chat => chat._id == state.activeChat._id);
+
+        if(updatedChat) {
+          state.activeChat = updatedChat;
+        }
+      }
+
       state.isLoading = false;
       state.error = null;
     })

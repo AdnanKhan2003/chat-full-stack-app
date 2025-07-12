@@ -13,6 +13,12 @@
     justify-content: space-between;
 }
 
+.chatname__container > button {
+    margin-left: 1rem;
+    padding: .23rem .57rem;
+    cursor: pointer;
+}
+
 input {
     width: 100%;
     max-width: 300px;
@@ -25,8 +31,12 @@ input {
     width: 100%;
 }
 
+.users__container__edit {
+    margin: 1rem 0;
+}
+
 .users__input {
-    margin: 1rem 0 1.52rem 0;
+    margin: 1rem 0 1rem 0;
 }
 
 .btn__close {
@@ -35,6 +45,10 @@ input {
     right: 0;
     margin: .55rem .75rem 0 0;
     cursor: pointer;
+}
+
+.search__results__container {
+    margin: 1rem 0;
 }
 
 .dialog__submit {
