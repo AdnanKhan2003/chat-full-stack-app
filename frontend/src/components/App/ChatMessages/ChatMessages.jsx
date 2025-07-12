@@ -10,6 +10,7 @@ import styles from "./ChatMessages.module.css";
 import ModalPortal from "../../../ui/Modal/Modal.jsx";
 import GroupChatForm from "../GroupChatForm/GroupChatForm.jsx";
 import { myChatThunk } from "../../../store/thunks/myChatThunk .js";
+import { handleGoToChats } from "../../../store/slices/chatSlice.js";
 
 const ChatMessages = () => {
   const [messages, setMessages] = useState([]);
@@ -17,7 +18,7 @@ const ChatMessages = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedChat, setSelectedChat] = useState("");
   const dispatch = useDispatch();
-  const { activeChat } = useSelector((state) => state.chats);
+  const { activeChat, myChats, goToChat } = useSelector((state) => state.chats);
   const { user } = useSelector((state) => state.isAuth);
   const loggedUserId = user?._id;
   const chatPartner =
@@ -44,6 +45,8 @@ const ChatMessages = () => {
 
   return (
     <>
+    {console.log(activeChat !== '' && myChats.find(c => c._id == activeChat._id))}
+    {console.log(myChats)}
       {showModal &&
         activeChat.isGroupChat &&
         selectedChat == activeChat?._id && (
@@ -70,12 +73,13 @@ const ChatMessages = () => {
             </div>
           </ModalPortal>
         )}
-      <div className={`${styles.chat__messages__container}`}>
+      <div className={`${styles.chat__messages__container} ${goToChat ? styles.visible : styles.not__visible}`}>
         {activeChat === "" && <EmptyChatMessages />}
         {activeChat !== undefined && activeChat !== "" && (
           <>
             <div className={`${styles.chat__message__header}`}>
-              <IoArrowBackOutline className={`${styles.btn__back}`} />
+              
+              <IoArrowBackOutline onClick={() => dispatch(handleGoToChats())} className={`${styles.btn__back}`} />
               <h3 className="message__receiver">
                 {activeChat.isGroupChat
                   ? activeChat.chatName

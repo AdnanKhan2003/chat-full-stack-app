@@ -64,7 +64,7 @@ const GroupChatEditForm = ({
             console.log(user);
             
             return (
-              <UserBadge key={user._id} user={user} onRemove={onRemoveUser} />
+              <UserBadge key={user._id} user={user} onRemove={onRemoveUser} edit={true} />
             );
           })}
       </div>

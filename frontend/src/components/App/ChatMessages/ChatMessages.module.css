@@ -94,5 +94,14 @@
     }
     .btn__back {
         display: block;
+        cursor: pointer;
+        pointer-events: all;
+    }
+    .visible {
+        opacity: 1;
+    }
+    .not__visible {
+        opacity: 0;
+        display: none;
     }
 }

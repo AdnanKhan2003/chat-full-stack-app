@@ -34,4 +34,11 @@
     .sidebar__container {
         max-width: 100%;
     }
+    .visible {
+        opacity: 1;
+    }
+    .not__visible {
+        opacity: 0;
+        display: none;
+    }
 }

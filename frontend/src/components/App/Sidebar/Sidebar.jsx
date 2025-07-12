@@ -2,7 +2,7 @@ import Spinner from "../../../ui/Spinner/Spinner";
 import Chat from "../Chat/Chat";
 import styles from "./Sidebar.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { handleActiveChat } from "../../../store/slices/chatSlice";
+import { handleActiveChat, handleGoToChat } from "../../../store/slices/chatSlice";
 import { useEffect } from "react";
 import { useFetch } from "../../../hooks/useFetch";
 import { myChatThunk } from "../../../store/thunks/myChatThunk ";
@@ -13,7 +13,7 @@ import GroupChatForm from "../GroupChatForm/GroupChatForm";
 const Sidebar = () => {
   const dispatch = useDispatch();
   const { fetchData, data, isLoading: fetchIsLoading, error } = useFetch();
-  const { chats, myChats, selectedChat, isLoading } = useSelector(
+  const { chats, myChats, goToChat, selectedChat, isLoading } = useSelector(
     (state) => state.chats
   );
   const { user } = useSelector((state) => state.isAuth);
@@ -33,6 +33,7 @@ const Sidebar = () => {
 
   const handleSelectedChat = (chat) => {
     dispatch(handleActiveChat(chat));
+    dispatch(handleGoToChat())
     console.log(myChats, activeChat);
   };
 
@@ -43,7 +44,7 @@ const Sidebar = () => {
           <GroupChatForm onClose={setShowModal} onSuccess={handleGroupChatCreated} />{" "}
         </ModalPortal>
       )}
-      <div className={`${styles.sidebar__container}`}>
+      <div className={`${styles.sidebar__container} ${goToChat ? styles.not__visible : styles.visible}`}>
         <div className={`${styles.chat__header}`}>
           <h3>My Chats</h3>
           <button onClick={() => setShowModal(true)}>New Group Chat +</button>

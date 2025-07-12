@@ -4,6 +4,7 @@
     top: 0;
     background-color: var(--light-variant-color);
     color: var(--dark-color);
+    z-index: 999999;
 }
 
 .main__navbar {
@@ -76,3 +77,4 @@
 .option > svg {
     margin-right: .5rem;
 }
+

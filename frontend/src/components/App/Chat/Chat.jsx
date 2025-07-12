@@ -17,7 +17,7 @@ const Chat = ({ chat, onSelect }) => {
   return (
     <div
     onClick={() => onSelect(chat)}
-      className={`${styles.chat__container} ${isActive ? styles.active : ""}`}
+      className={`${styles.chat__container} ${isActive ? `${styles.active}` : ""}`}
     >
       <img
         className={`${styles.chat__profile__pic}`}

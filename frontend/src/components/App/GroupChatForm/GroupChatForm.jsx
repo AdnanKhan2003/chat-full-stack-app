@@ -8,7 +8,8 @@ import styles from "./GroupChatForm.module.css";
 import { useNavigate } from "react-router";
 import { showToast } from "../../../lib/toast";
 import GroupChatEditForm from "./GroupChatEditForm/GroupChatEditForm";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { handleAddUserToGroup, handleRemoveUserFromGroup as handleRemoveUserFromGroupAction } from "../../../store/slices/chatSlice";
 
 const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
   const [chatNameInput, setChatNameInput] = useState("");
@@ -17,6 +18,7 @@ const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
   const [userSearchResults, setUserSearchResults] = useState([]);
   const { myChats, activeChat } = useSelector(state => state.chats);
   const { fetchData, data, isLoading, error } = useFetch();
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
@@ -64,9 +66,37 @@ const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
     navigate('/');
   };
 
-  const handleEditGroupUsers = (user) => {
-    console.log(user, myChats, activeChat);
+  const handleEditGroupUsers = async (user) => {
+    console.log(user, activeChat);
     
+    const res = await fetchData('http://localhost:3000/api/chat/groupadd', {
+      method: "PUT",
+      body: JSON.stringify({ chatId: activeChat._id, userId: user._id })
+    });
+
+    if(res){
+      showToast({
+        type: "success",
+        title: "User Added!",
+        message: "Added User Successfully!",
+        duration: 3000,
+        show: true,
+        position: 'top'
+      });
+      dispatch(handleAddUserToGroup(res));
+      console.log(res);
+
+      
+    } else {
+      showToast({
+        type: "error",
+        title: "User Already Exists!",
+        message: "Can't Add Existing User Again!",
+        duration: 3000,
+        show: true,
+        position: 'top'
+      });
+    }
   };
 
   const handleAddUsers = (userToAdd, editUser = false) => {
@@ -96,7 +126,7 @@ const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
     
   }
 
-  const handleRemoveUser = (id) => {
+  const handleRemoveUser = (id, editUser = false) => {
     console.log(id);
     
     setUsers(prevState => {
@@ -104,6 +134,41 @@ const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
         return prevState.filter(user => user._id !== id);
       }
     });
+
+    if(editUser = true) {
+      handleRemoveUserFromGroup(id);
+    }
+  };
+ 
+  const handleRemoveUserFromGroup = async (id) => {
+    const res = await fetchData('http://localhost:3000/api/chat/groupremove', {
+      method: "PUT",
+      body: JSON.stringify({ chatId: activeChat._id, userId: id })
+    });
+
+    if(res){
+      showToast({
+        type: "success",
+        title: "User Removed!",
+        message: "Removed User Successfully!",
+        duration: 3000,
+        show: true,
+        position: 'top'
+      });
+      dispatch(handleRemoveUserFromGroupAction(res));
+      console.log(res);
+
+      
+    } else {
+      showToast({
+        type: "error",
+        title: "Couldn't Remove User!",
+        message: "Removing User Again!",
+        duration: 3000,
+        show: true,
+        position: 'top'
+      });
+    }
   };
 
   const handleChangeUsers = (value) => {
