@@ -13,28 +13,57 @@ import GroupChatForm from "../GroupChatForm/GroupChatForm";
 const Sidebar = () => {
   const dispatch = useDispatch();
   const { fetchData, data, isLoading: fetchIsLoading, error } = useFetch();
-  const { chats, myChats, goToChat, selectedChat, isLoading } = useSelector(
+  const { myChats, goToChat, isLoading } = useSelector(
     (state) => state.chats
   );
+  const w= useSelector(state => state.chats);
   const { user } = useSelector((state) => state.isAuth);
   const { activeChat } = useSelector((state) => state.chats);
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     dispatch(myChatThunk());
+    
   }, []);
 
-  const handleGroupChatCreated = () => {
-    dispatch(myChatThunk());    
-    console.log(myChats, activeChat);
+  useEffect(() => {
+    if(activeChat || myChats.length == 0) return;
 
+    let localActiveChatId = null;
+    try {
+      localActiveChatId = JSON.parse(localStorage.getItem('persistentActiveChatId')) || null;
+    } catch(err) {
+      console.log('Can Not Read Active Chat Id');
+      return;
+    }
+
+    if(!localActiveChatId) return;
+
+    const matchChat = myChats.find(chat => chat._id == localActiveChatId);
+    if(matchChat) {
+
+      dispatch(handleActiveChat(matchChat));
+    }
+ 
+  }, [myChats, activeChat]);
+
+  useEffect(() => {
+    if(activeChat?._id) {
+      localStorage.setItem('persistentActiveChatId', JSON.stringify(activeChat._id));
+    }
+  }, [activeChat]);
+
+
+  const handleGroupChatCreated = (chat) => {
+    dispatch(myChatThunk());    
+    dispatch(handleActiveChat(chat));
   };
 
+  
 
   const handleSelectedChat = (chat) => {
     dispatch(handleActiveChat(chat));
     dispatch(handleGoToChat())
-    console.log(myChats, activeChat);
   };
 
   return (
@@ -51,10 +80,24 @@ const Sidebar = () => {
         </div>
         <div className={`${styles.chats__container}`}>
           {isLoading && <Spinner />}
+          {console.log('myChatsw', myChats)
+          }
           {!isLoading &&
             Array.isArray(myChats) &&
             myChats.length > 0 &&
-            myChats.map((chat) => {
+            [...myChats]
+            .sort((a, b) => {
+              console.log('a createdAt', a, a.latestMessage?.createdAt);
+              console.log('a updatedAt', a, a.latestMessage?.updatedAt);
+
+              console.log('b createdAt', b, b.latestMessage?.createdAt);
+              console.log('b updatedAt', b, b.latestMessage?.updatedAt);
+              
+              const aTime = new Date(a.latestMessage?.createdAt || a.updatedAt || 0).getTime();
+              const bTime = new Date(b.latestMessage?.createdAt || b.updatedAt || 0).getTime();
+              return bTime - aTime;
+            })
+            .map((chat) => {
               return (
                 <Chat
                   key={chat._id}
@@ -63,6 +106,7 @@ const Sidebar = () => {
                 />
               );
             })}
+            {/* {console.log(myChats, 'sidebar', w)} */}
           {/* {!isLoading &&
           Array.isArray(chats) &&
           chats.length > 0 &&

@@ -1,0 +1,30 @@
+
+.chat__messages__input__container > div {
+    display: flex    ;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #ccc;
+    border-radius: .3rem;
+    margin: 1rem 1rem;
+    padding: .3rem .7rem;
+}
+
+.chat__messages__input__container > div > input {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    max-width: 100%;
+    width: 100%;
+    flex-grow: 1;
+}
+
+.chat__messages__input__container > div > button {
+    border: none;
+    background: none;
+    outline: none;
+    margin-left: auto;
+}
+
+.btn__send {
+    cursor: pointer;
+}

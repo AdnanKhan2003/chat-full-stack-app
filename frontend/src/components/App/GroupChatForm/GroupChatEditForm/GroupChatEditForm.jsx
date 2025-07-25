@@ -23,18 +23,15 @@ const GroupChatEditForm = ({
 
   
   const handleEditGroupChatName = async () => {
-    console.log(chatNameInput);
 
     const res = await fetchData("http://localhost:3000/api/chat/rename", {
       method: "PUT",
       body: JSON.stringify({ chatId: activeChat._id, chatName: chatNameInput }),
     });
 
-    console.log(res);
     
     if (res) {
       setChatNameInput(res.chatName);
-      console.log(onSuccess);
       
       onSuccess();
     } else {
@@ -55,22 +52,15 @@ const GroupChatEditForm = ({
       <div
         className={`${styles.users__container} ${styles.users__container__edit}`}
       >
-        {
-          console.log(activeChat, myChats)
-        }
         {Array.isArray(activeChat.users) &&
           activeChat.users.length > 0 &&
           activeChat.users.map((user) => {
-            console.log(user);
             
             return (
               <UserBadge key={user._id} user={user} onRemove={onRemoveUser} edit={true} />
             );
           })}
       </div>
-      {
-        console.log('activeChat', activeChat)
-      }
       <form onSubmit={onCreate} className={`${styles.form__group}`}>
         <div className={`${styles.form__inputs}`}>
           <div className={`${styles.chatname__container}`}>

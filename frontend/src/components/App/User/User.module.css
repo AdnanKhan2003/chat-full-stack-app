@@ -16,6 +16,7 @@
     margin-left: .81rem;
     margin-right: .6rem;
     align-self: center;
+    object-fit: cover;
 }
 
 .results__content h5 {

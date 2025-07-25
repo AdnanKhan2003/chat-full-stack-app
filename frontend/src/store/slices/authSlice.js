@@ -11,6 +11,11 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
+    handleUpdateProfilePic: function (state, action) {
+      if(state.user) {
+        state.user.profilePic = action.payload;
+      }
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(checkAuthThunk.pending, (state) => {
@@ -32,6 +37,6 @@ export const authSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { handleSelectedChat } = authSlice.actions
+export const { handleUpdateProfilePic } = authSlice.actions
 
 export default authSlice.reducer

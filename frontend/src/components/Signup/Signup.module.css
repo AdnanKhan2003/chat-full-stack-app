@@ -49,6 +49,30 @@
     text-align: center;
 }
 
+.preview__container {
+    width: 65px;
+    position: relative;
+}
+
+.preview__image {
+    width: 100%;
+    object-fit: cover;
+}
+
+.btn__preview {
+    position: absolute;
+    background-color: rgba(255, 255, 255, .63);
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    font-weight: bolder;
+    top: 0;
+    right: 0;
+    padding: .1rem .21rem;
+    font-size: .65rem;
+    margin: .2rem .2rem 0 0;
+}
+
 .btn__container {
     margin-top: 1rem;
 }

@@ -1,80 +1,182 @@
 .main__header {
-    width: 100%;
-    position: sticky;
-    top: 0;
-    background-color: var(--light-variant-color);
-    color: var(--dark-color);
-    z-index: 999999;
+  width: 100%;
+  position: sticky;
+  top: 0;
+  background-color: var(--light-variant-color);
+  color: var(--dark-color);
+  z-index: 999;
 }
 
 .main__navbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: .8rem 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem 4rem;
 }
 
 .search__input__container {
-    border: 1px solid #b31e1e;
-    background: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: .3rem .7rem;
-    border-radius: .3rem;
+  border: 1px solid #b31e1e;
+  background: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.3rem 0.7rem;
+  border-radius: 0.3rem;
+}
+
+/* .search__input__container[title] {
+  padding: .3rem .7rem;
+  border-radius: .3rem;
+} */
+
+.search__mobile {
+  display: none;
 }
 
 .search__input__container > svg {
-    margin-right: .31rem;
+  margin-right: 0.31rem;
 }
 
 .search__input__container > input {
-    border: none;
-    outline: none;
-    background-color: transparent;
-    width: 100%;
-    color: var(--dark-color);
+  border: none;
+  outline: none;
+  background-color: transparent;
+  width: 100%;
+  color: var(--dark-color);
 }
 
 .app__name > h1 {
-    font-size: 1.42rem;
+  font-size: 1.42rem;
+}
+
+.icon__bell {
+  cursor: pointer;
+  position: relative;
+  font-size: 1.11rem;
 }
 
 .profile__pic {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    cursor: pointer;
-    margin-left: .81rem;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  margin-left: 0.81rem;
+  font-size: 1.3rem;
 }
 
 .profile__options {
-    position: absolute;
-    right: 60px;
-    bottom: -25px;
-    padding: .3rem .7rem;
-    border-radius: .3rem;
-    border: 1px solid #ccc;
-    background-color: var(--light-color);
+  position: absolute;
+  right: 60px;
+  /* bottom: -25px; */
+  bottom: -45px;
+  padding: 0.3rem 0rem;
+  border-radius: 0.3rem;
+  border: 1px solid #ccc;
+  background-color: var(--light-color);
 }
 
 .profile__options > .option {
-    display: flex;
-    align-items: center;
-    padding: .3rem .7rem;
-    font-size: .91rem;
+  display: flex;
+  align-items: center;
+  padding: 0.3rem 0.7rem;
+  font-size: 0.91rem;
 }
 
 .option {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .option:hover {
-    background-color: var(--light-variant-color);
-    transition: all .3s ease-in-out;
+  background-color: var(--light-variant-color);
+  transition: all 0.3s ease-in-out;
 }
 
 .option > svg {
-    margin-right: .5rem;
+  margin-right: 0.5rem;
 }
 
+.extra__links {
+  text-decoration: none;
+  padding: 0 0.7rem;
+}
+
+.notifications__container {
+  display: flex;
+  flex-direction: column;
+  padding: 0.61rem 0;
+  position: absolute;
+  right: 97px;
+  top: 38px;
+  border-radius: 0.3rem;
+  border: 1px solid #ccc;
+  background-color: var(--light-color);
+}
+
+.notification {
+  cursor: pointer;
+  padding: 0.3rem 0.7rem;
+  border-radius: 0.3rem;
+}
+
+.badge {
+  border-radius: 50%;
+  background-color: rgba(247, 0, 0, 0.836);
+  color: var(--light-color);
+  width: 18px;
+  height: 18px;
+  text-align: center;
+  font-size: 0.8rem;
+  position: absolute;
+  top: 14px;
+  right: 89px;
+}
+
+.notification:hover {
+  background-color: aliceblue;
+}
+
+.single__chat__details {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.single__chat__profile__pic {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+}
+
+.avatar__container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.edit__profile__pic__icon {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: rgb(120, 206, 120);
+  border-radius: 50%;
+  padding: .1rem .2rem;
+  font-size: .8rem;
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}
+
+@media (max-width: 650px) {
+  .search__mobile {
+    display: block;
+    cursor: pointer;
+  }
+  .search__input__container {
+    display: none;
+  }
+}

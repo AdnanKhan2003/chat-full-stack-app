@@ -1,66 +1,99 @@
 .searchbox__container {
-    background-color: var(--light-color);
-    min-height: 550px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 3;
-    width: 40%;
-    max-width: 400px;
-    border-top-right-radius: .3rem;
-    border-bottom-right-radius: .3rem;
-    padding: 2rem 1rem;
+  /* background-color: var(--light-color); */
+  /* background-color: rgba(255, 255, 255, 0.967); */
+  display: flex;
+  flex-direction: column;
+  background-color: #fff5ee;
+  border: 1px solid #ccc;
+  min-height: 550px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  width: 90%;
+  max-width: 350px;
+  border-top-right-radius: 0.3rem;
+  border-bottom-right-radius: 0.3rem;
+  padding: 2rem 1rem;
+  height: 777px;
 
-    transform: translateX(-100%);
-    opacity: 0;
-    transition: transform 0.2s ease, opacity 0.2s ease;
+  transform: translateX(-100%);
+  opacity: 0;
+  transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
 .show {
-    transform: translateX(0);
-    opacity: 1;
+  transform: translateX(0);
+  opacity: 1;
 }
 
 .searchbox__header {
-    padding: 1rem 0;
+  padding: 1rem 0;
 }
 
 .searchbox__header > h5 {
-    font-size: 1.42rem;
+  font-size: 1.42rem;
 }
 
 .searchbox__input {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
 }
 
 .searchbox__input > input,
 .searchbox__input > button {
-    padding: .3rem .7rem;
+  padding: 0.3rem 0.7rem;
 }
 
 .searchbox__input > input {
-    width: 100%;
-    outline: none;
+  width: 100%;
+  outline: none;
 }
 
 .searchbox__input > button {
-    margin-left: 1rem;
+  margin-left: 1rem;
+}
+
+.search__results__container {
+  overflow-y: scroll;
+
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.14) transparent;
+}
+
+.search__results__container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.search__results__container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.search__results__container::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.14);
+  /* background-color: rgba(0, 0, 0, 0.14); */
+  border-radius: 3px;
+  transition: background 0.3s;
+}
+
+.search__results__container::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.14);
 }
 
 .results__user__container {
-    display: flex;
-    padding: 2rem 0;
+  display: flex;
+  padding: 2rem 0;
 }
 
 .user__profile__pic {
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    cursor: pointer;
-    margin-left: .81rem;
-    margin-right: .6rem;
-    align-self: center;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-left: 0.81rem;
+  margin-right: 0.6rem;
+  align-self: center;
 }

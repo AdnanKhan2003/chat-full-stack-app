@@ -130,6 +130,28 @@ export const renameGroup = async (req, res, next) => {
 export const addToGroup = async (req, res, next) => {
     const { chatId, userId } = req.body;
 
+    const chat = await Chat.findById(chatId);
+
+    if(!chat) {
+      return res.status(404);
+    }
+
+    if(chat.groupAdmin._id.toString() !== req.user._id.toString()) {
+      return res.status(403).json({
+        message: 'Only Group Admin Can Add Users!'
+      });
+    }
+
+    const userExists = chat.users.find(c => c._id.toString() === userId.toString())
+    console.log(chat.users, userExists);
+    
+
+    if(userExists){
+      return res.status(422).json({
+        message: "User Already Edited!"
+      });
+    }
+
     const added = await Chat.findByIdAndUpdate(chatId, { 
         $push: { users: userId },
     }, {
@@ -148,6 +170,14 @@ export const addToGroup = async (req, res, next) => {
 
 export const removeFromGroup = async (req, res, next) => {
     const { chatId, userId } = req.body;
+
+    const chat = await Chat.findById(chatId);
+
+    if(chat.groupAdmin._id.toString() !== req.user._id.toString()) {
+      return res.status(403).json({
+        message: 'Only Group Admin Can Remove Users!'
+      });
+    }
 
     const removed = await Chat.findByIdAndUpdate(chatId, {
         $pull: { users: userId }

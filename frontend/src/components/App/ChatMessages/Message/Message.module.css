@@ -1,7 +1,8 @@
 .message__container {
     display: flex;
-    align-items: flex-end;
+    align-self: flex-end;
     margin: 1rem 0;
+    text-align: left;
 }
 
 .message__profile__pic {
@@ -9,6 +10,7 @@
     height: 22px;
     border-radius: 50%;
     margin-right: .51rem;
+    object-fit: cover;
 }
 
 .message {
@@ -16,4 +18,16 @@
     padding: .3rem .7rem;
     border-radius: .3rem;
     font-size: .81rem;
+}
+
+.message__loggedUser {
+    background-color: rgb(214 231 220);
+}
+
+.sender {
+    align-self: flex-end;
+}
+
+.receiver {
+    align-self: flex-start;
 }

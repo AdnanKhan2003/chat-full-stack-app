@@ -15,8 +15,17 @@
     margin-left: .81rem;
     margin-right: .6rem;
     align-self: center;
+    object-fit: cover;
 } 
 
 .active {
-    background-color: antiquewhite;
+    /* background-color: antiquewhite; */
+    background-color: rgba(255, 255, 224, .51);
+}
+
+
+@media (max-width: 650px) {
+    .active {
+        background-color: transparent;
+    }        
 }

@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import cloudinary from "../lib/cloudinary.js";
 
 import User from "../models/user.model.js";
 import { generateToken } from "../lib/utils.js";
@@ -31,6 +32,16 @@ export const postSignup = async (req, res, next) => {
   const { name, email, password, profilePic } = req.body;
 
   try {
+    let uploadProfileUrl = "";
+
+    if (profilePic) {
+      const uploadResult = await cloudinary.uploader.upload(profilePic, {
+        folder: "profile__pics",
+      });
+
+      uploadProfileUrl = uploadResult.secure_url;
+    }
+
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -38,6 +49,7 @@ export const postSignup = async (req, res, next) => {
       name,
       email,
       password: hashedPassword,
+      profilePic: uploadProfileUrl,
     });
 
     const result = await newUser.save();
@@ -115,6 +127,36 @@ export const checkAuth = (req, res, next) => {
     // });
     res.status(500).json({
       message: "You're not Authenticated",
+    });
+  }
+};
+
+export const updateUserProfilePic = async (req, res, next) => {
+  try {
+    const { userId, profilePic } = req.body;
+
+    if(!profilePic) {
+      return res.status(400).json({ message: 'No Profile Pic Provided!' });
+    }
+
+    let updatedProfilePic = '';
+
+    const result = await cloudinary.uploader.upload(profilePic, { folder: 'profile__pics' });
+
+    updatedProfilePic = result.secure_url;
+
+    const updatedUser = await User.findByIdAndUpdate(userId, {
+      profilePic: updatedProfilePic
+    }, {new: true});
+
+    if(!updatedUser) {
+      return res.status(404).json({ message: "User Not Found!" });
+    }
+
+    res.status(200).json({ profilePic: updatedUser.profilePic });
+  } catch (err) {
+    res.status(500).json({
+      message: err.message + "You're not Authenticated",
     });
   }
 };

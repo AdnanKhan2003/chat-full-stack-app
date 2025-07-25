@@ -10,7 +10,7 @@ import { checkAuthThunk } from "../../store/thunks/authThunk.js";
 import Toast from "../../ui/Toast/Toast.jsx";
 import { showToast } from "../../lib/toast.js";
 import { useFetch } from "../../hooks/useFetch";
-import Spinner from '../../ui/Spinner/Spinner';
+import Spinner from "../../ui/Spinner/Spinner";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -45,6 +45,8 @@ const Signup = () => {
       setFormInputData((prevState) => ({ ...prevState, [id]: e.target.value }));
     } else {
       const file = e.target.files[0];
+
+      if (!file) return;
 
       const reader = new FileReader();
 
@@ -208,6 +210,7 @@ const Signup = () => {
           onClick={setIsPasswordVisible}
           isPasswordVisible={isPasswordVisible}
         />
+
         <Input
           label="Profile Picture"
           name="profilePic"
@@ -215,9 +218,19 @@ const Signup = () => {
           accept="image/*"
           onChange={handleChange}
         />
+        {formInputData.profilePic && (
+          <div className={`${styles.preview__container}`}>
+            <img
+              src={formInputData.profilePic}
+              className={`${styles.preview__image}`}
+              alt="Preview"
+            />
+            <button onClick={() => setFormInputData(prevState => ({ ...prevState, profilePic: "" }))} className={`${styles.btn__preview}`}>X</button>
+          </div>
+        )}
         <div className={`${styles.btn__container}`}>
           <button className={`${styles.btn__signup}`} type="submit">
-            {isLoading ? <Spinner /> : 'Sign Up'}
+            {isLoading ? <Spinner /> : "Sign Up"}
           </button>
           <button
             onClick={() => navigate("/login")}

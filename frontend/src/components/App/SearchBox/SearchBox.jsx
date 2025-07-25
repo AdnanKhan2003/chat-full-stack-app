@@ -6,11 +6,12 @@ import { useFetch } from "../../../hooks/useFetch";
 import User from "../User/User";
 import Spinner from "../../../ui/Spinner/Spinner";
 import { chatThunk } from "../../../store/thunks/chatThunk";
+import { showToast } from "../../../lib/toast";
 
 const SearchBox = () => {
-  const [userName, setUserName] = useState("");
-  const [isVisible, setIsVisible] = useState(false);
-  const [hasSearched, setHasSearched] = useState();
+  const [ userName, setUserName ] = useState("");
+  const [ isVisible, setIsVisible ] = useState(false);
+  const [ hasSearched, setHasSearched ] = useState();
   const { fetchData, data, isLoading, error } = useFetch();
   const { chats } = useSelector(state => state.chats);
 
@@ -18,8 +19,6 @@ const SearchBox = () => {
   const searchBoxEle = useRef();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-
   
   const handleSearchUser = async (e) => {
     e.preventDefault();
@@ -31,13 +30,20 @@ const SearchBox = () => {
     );
 
     // dispatch()
-    console.log(chats, res);
-    
+    console.log(chats, res);   
   };
 
   const accessChat = async (user) => {
     const userId = user._id;
     dispatch(chatThunk(userId));
+    showToast({
+      type: "success",
+      title: "Chat Sucessfully Created!",
+      message: "Let's Send Hi!",
+      duration: 3000,
+      show: true,
+      position: 'top'
+    });
     navigate("/");
   };
 
@@ -90,7 +96,7 @@ const SearchBox = () => {
         <button>Go</button>
       </form>
 
-      <div className="search__results__container">
+      <div className={`${styles.search__results__container}`}>
         {isLoading && <Spinner />}
 
         {hasSearched &&

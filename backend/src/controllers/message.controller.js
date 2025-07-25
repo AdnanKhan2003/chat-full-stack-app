@@ -1,4 +1,5 @@
 import Message from "../models/message.model.js";
+import User from "../models/user.model.js";
 import Chat from "../models/chat.model.js";
 
 export const getMessages = async (req, res, next) => {
@@ -30,10 +31,13 @@ export const sendMessage = async (req, res, next) => {
       sender: req.user._id,
       chat: chatId,
     });
-    let result = await newMessage
-      .save()
-      .populate("sender", "email name profilePic")
-      .populate("chat");
+
+    let result = await newMessage.save();
+
+    result = await result.populate([
+      { path: "sender", select: "email name profilePic" },
+      { path: "chat" }
+    ]);
 
     result = await User.populate(result, {
       path: "chat.users",
@@ -41,7 +45,7 @@ export const sendMessage = async (req, res, next) => {
     });
 
     await Chat.findByIdAndUpdate(chatId, {
-      latestMessage: result,
+      latestMessage: newMessage._id,
     });
 
     res.status(201).json({
@@ -49,7 +53,7 @@ export const sendMessage = async (req, res, next) => {
       result
     });
   } catch (err) {
-    const error = new Error("Creating Chat Failed");
+    const error = new Error(err.message + "Creating Chat Failed");
     error.status = 500;
     res.status(error.status).json({ message: error.message });
   }

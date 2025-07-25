@@ -1,0 +1,12 @@
+#modal-root,
+#toast-root {
+  position: fixed;
+}
+
+#modal-root {
+  z-index: 9999;
+  /* pointer-events: none; */
+}
+#toast-root {
+  z-index: 99999;
+}

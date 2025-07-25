@@ -56,6 +56,9 @@ input {
 
 .dialog__submit {
     padding: .3rem .7rem;
+    background-color: lavenderblush;
+    border: 1px solid #ccc;
+    border-radius: .3rem;
 }
 
 .btn__update,

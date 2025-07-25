@@ -23,3 +23,12 @@ export const capitalizeFirstLetter = (string) => {
     if(typeof string !== 'string') return false;
     return string[0].toUpperCase() + string.slice(1).toLowerCase(); 
 };
+
+export const limitString = (string, limit = 21) => {
+    if(typeof string !== 'string') return false;
+
+    if(string.length <= limit) return string;
+
+    const shortedString = string.slice(0, limit) + '...';    
+    return shortedString;    
+};

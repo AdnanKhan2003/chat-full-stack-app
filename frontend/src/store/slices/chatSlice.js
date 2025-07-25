@@ -6,13 +6,15 @@ import { myChatThunk } from "../thunks/myChatThunk ";
 // REMOVED
 // groupChats: [],
 // selectedChat: "",
+// chats: [],
 
 const initialState = {
   myChats: [],
-  chats: [],
   users: [],
   activeChat: "",
+
   goToChat: false,
+
   isLoading: false,
   error: null,
 };
@@ -26,6 +28,81 @@ export const chatSlice = createSlice({
     },
     handleActiveChat: function (state, action) {
       state.activeChat = action.payload;
+    },
+    removeActiveChat: function (state, action) {
+      state.activeChat = "";
+    },
+    handleAddToMyChats: function(state, action){
+      const chat = { ...action.payload, createdAt: action.payload.createdAt || new Date().toISOString() }
+      console.log('acc', chat);
+
+      const chatIndex = state.myChats.find(c => c._id.toString() === chat._id.toString());
+
+      if(chatIndex !== -1) {
+        state.myChats.splice(chatIndex, 1);
+      }
+      
+      state.myChats.unshift(chat);
+    },
+    handlePushGroupChatToTop: function(state, action) {
+
+    },
+    handlePushNotificationChat: function (state, action) {
+      const chatId = action.payload;
+      console.log('chatId', chatId);
+      
+      const chatIndex = state.myChats.findIndex(c => c._id.toString() === chatId.toString());
+      console.log('chatIndex', chatIndex);
+
+      if(chatIndex == -1) return;
+
+      const latestNotificationMessage = state.myChats[chatIndex];
+      console.log('latestNotificationMessage', latestNotificationMessage);
+
+      if(!latestNotificationMessage) return;
+
+      if(latestNotificationMessage.latestMessage) {
+        latestNotificationMessage.latestMessage.createdAt = new Date().toISOString();
+        console.log('latestNotificationMessage.latestMessage.createdAt', latestNotificationMessage.latestMessage.createdAt);
+        
+      }
+
+      state.myChats = [
+          latestNotificationMessage,
+        ...state.myChats.filter(c => c._id.toString() !== chatId.toString()),
+       ]
+       console.log('w');
+       
+    },
+    handlePushLatestMessage: function (state, action) {
+      const { chatId, latestMessage } = action.payload;
+      console.log(chatId, latestMessage);
+      
+
+      const chatIndex = state.myChats.findIndex(
+        (c) => c._id.toString() === chatId.toString()
+      );
+
+      if (chatIndex !== -1) {
+        state.myChats[chatIndex] = {
+          ...state.myChats[chatIndex],
+          latestMessage,
+        };
+
+        const updatedChat = state.myChats[chatIndex];
+        state.myChats.splice(chatIndex, 1);
+        state.myChats.unshift(updatedChat);
+
+        console.log('l', latestMessage);
+        console.log('transforemed', updatedChat);
+        
+        if(state.activeChat && state.activeChat._id.toString() === chatId.toString()){
+          state.activeChat = updatedChat;
+        }
+
+        console.log('updatedChat', updatedChat, ...state.myChats);
+        
+      }
     },
     handleAddUsers: function (state, action) {
       state.users = action.payload;
@@ -83,15 +160,17 @@ export const chatSlice = createSlice({
       })
       .addCase(chatThunk.fulfilled, (state, action) => {
         const newChat = action.payload;
-        const existingChat = state.chats.find((c) => c._id == newChat._id);
+        const existingChat = state.myChats.find((c) => c._id == newChat._id);
         if (
           !existingChat &&
-          !state.chats.find((chat) => chat._id === newChat._id)
+          !state.myChats.find((chat) => chat._id === newChat._id)
         ) {
-          state.chats = [newChat, ...state.chats];
+          state.myChats = [newChat, ...state.myChats];
         }
         state.selectedChat = action.payload._id;
+        state.activeChat = action.payload;
         state.isLoading = false;
+        state.activeChat = newChat;
         state.error = null;
       })
       .addCase(chatThunk.rejected, (state, action) => {
@@ -126,14 +205,17 @@ export const chatSlice = createSlice({
   },
 });
 
-// Action creators are generated for each case reducer function
 export const {
   handleSelectChat,
   handleActiveChat,
+  removeActiveChat,
+  handleAddToMyChats,
+  handlePushNotificationChat,
+  handlePushLatestMessage,
   handleAddUserToGroup,
   handleRemoveUserFromGroup,
   handleGoToChat,
-  handleGoToChats
+  handleGoToChats,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;
