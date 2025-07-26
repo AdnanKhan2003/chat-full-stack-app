@@ -42,9 +42,7 @@ export const showToast = ({
     title,
     message,
     position = 'top'
-}) => {
-    console.log(toastDispatch);
-    
+}) => {   
     if(!toastDispatch) return;
 
     

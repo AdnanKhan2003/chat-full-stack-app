@@ -13,6 +13,7 @@ const initialState = {
   users: [],
   activeChat: "",
 
+  refetchFlag: false,
   goToChat: false,
 
   isLoading: false,
@@ -44,17 +45,23 @@ export const chatSlice = createSlice({
       
       state.myChats.unshift(chat);
     },
-    handlePushGroupChatToTop: function(state, action) {
-
+    triggerRefetch: function(state, action) {
+      state.refetchFlag = action.payload;
     },
     handlePushNotificationChat: function (state, action) {
-      const chatId = action.payload;
+      const chatId = action.payload.chat._id;
       console.log('chatId', chatId);
       
       const chatIndex = state.myChats.findIndex(c => c._id.toString() === chatId.toString());
       console.log('chatIndex', chatIndex);
 
-      if(chatIndex == -1) return;
+      if(chatIndex == -1) {
+        state.activeChat = action.payload.chat;
+        console.log('gggggg', action.payload.chat);
+        
+        return;
+      };
+      // if(chatIndex == -1) return;
 
       const latestNotificationMessage = state.myChats[chatIndex];
       console.log('latestNotificationMessage', latestNotificationMessage);
@@ -209,6 +216,7 @@ export const {
   handleSelectChat,
   handleActiveChat,
   removeActiveChat,
+  triggerRefetch,
   handleAddToMyChats,
   handlePushNotificationChat,
   handlePushLatestMessage,

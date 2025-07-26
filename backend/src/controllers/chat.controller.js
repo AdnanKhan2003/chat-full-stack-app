@@ -91,7 +91,7 @@ export const createGroupChat = async (req, res, next) => {
     const fullGroupChat = await Chat.findOne({ _id: result._id })
       .populate("users", "-password")
       .populate("groupAdmin", "-password");
-
+      
     res.status(200).json(fullGroupChat);
   } catch (err) {
     const error = new Error("Creating Chat Failed");

@@ -13,7 +13,7 @@ import GroupChatForm from "../GroupChatForm/GroupChatForm";
 const Sidebar = () => {
   const dispatch = useDispatch();
   const { fetchData, data, isLoading: fetchIsLoading, error } = useFetch();
-  const { myChats, goToChat, isLoading } = useSelector(
+  const { myChats, goToChat, refetchFlag, isLoading } = useSelector(
     (state) => state.chats
   );
   const w= useSelector(state => state.chats);
@@ -23,8 +23,7 @@ const Sidebar = () => {
 
   useEffect(() => {
     dispatch(myChatThunk());
-    
-  }, []);
+  }, [refetchFlag]);
 
   useEffect(() => {
     if(activeChat || myChats.length == 0) return;
@@ -80,19 +79,11 @@ const Sidebar = () => {
         </div>
         <div className={`${styles.chats__container}`}>
           {isLoading && <Spinner />}
-          {console.log('myChatsw', myChats)
-          }
           {!isLoading &&
             Array.isArray(myChats) &&
             myChats.length > 0 &&
             [...myChats]
             .sort((a, b) => {
-              console.log('a createdAt', a, a.latestMessage?.createdAt);
-              console.log('a updatedAt', a, a.latestMessage?.updatedAt);
-
-              console.log('b createdAt', b, b.latestMessage?.createdAt);
-              console.log('b updatedAt', b, b.latestMessage?.updatedAt);
-              
               const aTime = new Date(a.latestMessage?.createdAt || a.updatedAt || 0).getTime();
               const bTime = new Date(b.latestMessage?.createdAt || b.updatedAt || 0).getTime();
               return bTime - aTime;

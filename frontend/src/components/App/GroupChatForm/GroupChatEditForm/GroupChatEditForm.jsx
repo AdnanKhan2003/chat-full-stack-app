@@ -55,9 +55,11 @@ const GroupChatEditForm = ({
         {Array.isArray(activeChat.users) &&
           activeChat.users.length > 0 &&
           activeChat.users.map((user) => {
+            const isAdmin = activeChat.groupAdmin._id.toString() === user._id.toString();
+            
             
             return (
-              <UserBadge key={user._id} user={user} onRemove={onRemoveUser} edit={true} />
+              <UserBadge key={user._id} user={user} isAdmin={isAdmin} onRemove={onRemoveUser} edit={true} />
             );
           })}
       </div>
@@ -90,13 +92,6 @@ const GroupChatEditForm = ({
                 return <User key={user._id} editUser={true} data={user} onSelect={onAddUser} />;
               })}
           </div>
-          <button
-            type="button"
-            onClick={onCreate}
-            className={`${styles.dialog__submit}`}
-          >
-            Create Chat
-          </button>
         </div>
       </form>
     </>

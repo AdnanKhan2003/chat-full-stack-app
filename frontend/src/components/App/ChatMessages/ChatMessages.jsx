@@ -104,20 +104,20 @@ const ChatMessages = () => {
     return () => {
       socketRef.current.off("message received", handleMessageReceived);
     };
-  }, [notifications, messages, activeChat._id]);
+  }, [notifications, messages, activeChat?._id]);
 
-  useEffect(() => {
-    const handleJoinChat = async (chatId) => {
-      console.log('chatmessage wala chatId', chatId);
+  // useEffect(() => {
+  //   const handleJoinChat = async (chatId) => {
+  //     console.log('chatmessage wala chatId', chatId);
       
-      dispatch(myChatThunk());          
-    };
+  //     dispatch(myChatThunk());          
+  //   };
 
-    socketRef.current.on('join chat', handleJoinChat);
-    return () => {
-      socketRef.current.off('join chat', handleJoinChat);
-    };
-  }, [socketRef.current, activeChat._id]);
+  //   socketRef.current.on('join chat', handleJoinChat);
+  //   return () => {
+  //     socketRef.current.off('join chat', handleJoinChat);
+  //   };
+  // }, [socketRef.current, activeChat._id]);
 
   useEffect(() => {
     const container = bottomRef.current;
@@ -280,7 +280,7 @@ const ChatMessages = () => {
             <div className={`${styles.chat__messages__footer}`}>
               {socketRef.current && (
                 <ChatMessageInput
-                  socket={socket?.current}
+                  socket={socketRef?.current}
                   socketConnected={socketConnected}
                   activeChat={activeChat}
                   draft={draft[activeChat?._id] || ""}

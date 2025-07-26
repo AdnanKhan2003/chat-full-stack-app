@@ -24,7 +24,6 @@ const Chat = ({ chat, onSelect }) => {
         isActive ? `${styles.active}` : ""
       }`}
     >
-      {console.log("gg", chat)}
 
       <img
         className={`${styles.chat__profile__pic}`}

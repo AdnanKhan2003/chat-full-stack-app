@@ -16,3 +16,8 @@
     font-size: .78rem;
     margin-bottom: .1rem;
 }
+
+.user__admin {
+    background-color: #d38eda;
+    color: #fff;
+}

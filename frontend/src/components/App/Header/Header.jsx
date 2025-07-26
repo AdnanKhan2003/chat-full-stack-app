@@ -14,6 +14,7 @@ import {
   handlePushLatestMessage,
   handlePushNotificationChat,
   removeActiveChat,
+  triggerRefetch,
 } from "../../../store/slices/chatSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { showToast } from "../../../lib/toast";
@@ -22,6 +23,7 @@ import { handleRemoveNotificationById } from "../../../store/slices/notification
 import ModalPortal from "../../../ui/Modal/Modal";
 import { useRef } from "react";
 import ProfilePicSelection from "../ProfilePicSelection/ProfilePicSelection";
+import { myChatThunk } from "../../../store/thunks/myChatThunk ";
 
 const Header = () => {
   const [showModal, setShowModal] = useState(false);
@@ -213,16 +215,35 @@ const Header = () => {
               <div className={`${styles.notifications__container}`}>
                 {notifications.length > 0 &&
                   notifications.map((notification, i) => {
-                    const handleClickNotification = () => {
-                      const matchChat = myChats.find(
+                    const handleClickNotification = async () => {
+                      let matchChat = myChats.find(
                         (c) => c._id == notification.chat._id
                       );
 
-                      dispatch(handleActiveChat(matchChat));
+                      console.log('header handleNot', activeChat);
+                      console.log(activeChat);
+                      
+                      if(!matchChat) {
+                        const result = await dispatch(myChatThunk);
+                        if(myChatThunk.fulfilled.match(result)) {
+                          matchChat = result.payload.find(c => c._id.toString() === notification.chat._id.toString());
+                        }
+                      }
+                      
+                      if(matchChat){
+                        dispatch(handleActiveChat(matchChat));
+                      } else {
+                        dispatch(handleActiveChat(notification.chat));
+                      }
+                      console.log('x', activeChat);
+                      
                       dispatch(handleRemoveNotificationById(notification._id));
+                      console.log('y', notification, matchChat, activeChat);
+                      dispatch(triggerRefetch(true));
                       dispatch(
-                        handlePushNotificationChat(notification.chat._id)
+                        handlePushNotificationChat(notification)
                       );
+                      console.log('z');
                     };
 
                     return (
