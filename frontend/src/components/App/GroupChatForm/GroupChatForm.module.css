@@ -1,67 +1,86 @@
-
 .form__group {
-    margin: 1rem 0;
+  margin: 1rem 0;
 }
 
 .form__inputs {
-    margin: 1rem 0;
+  margin: 1rem 0;
 }
 
 .chatname__container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .chatname__container > button {
-    margin-left: 1rem;
-    padding: .23rem .57rem;
-    cursor: pointer;
+  margin-left: 1rem;
+  padding: 0.23rem 0.57rem;
+  cursor: pointer;
 }
 
 input {
-    width: 100%;
-    max-width: 300px;
-    padding: .3rem .7rem;
-    outline: none;
+  width: 100%;
+  max-width: 300px;
+  padding: 0.3rem 0.7rem;
+  outline: none;
 }
 
 .users__container {
-    display: flex;
-    width: 100%;
+  display: flex;
+  width: 100%;
 }
 
 .users__container__edit {
-    margin: 1rem 0;
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
+  margin: 1rem 0;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .users__input {
-    margin: 1rem 0 1rem 0;
+  margin: 1rem 0 1rem 0;
 }
 
 .btn__close {
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin: .55rem .75rem 0 0;
-    cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0.55rem 0.75rem 0 0;
+  cursor: pointer;
 }
 
 .search__results__container {
-    margin: 1rem 0;
+  margin: 1rem 0;
+  overflow-y: scroll;
+  max-height: 123px;
+}
+
+.search__results__container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.search__results__container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.search__results__container::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.14);
+  border-radius: 3px;
+  transition: background 0.3s;
+}
+
+.search__results__container::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.14);
 }
 
 .dialog__submit {
-    padding: .3rem .7rem;
-    background-color: lavenderblush;
-    border: 1px solid #ccc;
-    border-radius: .3rem;
+  padding: 0.3rem 0.7rem;
+  background-color: lavenderblush;
+  border: 1px solid #ccc;
+  border-radius: 0.3rem;
 }
 
 .btn__update,
 .dialog__submit {
-    cursor: pointer;
+  cursor: pointer;
 }

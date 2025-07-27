@@ -20,8 +20,12 @@ const SearchBox = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   
-  const handleSearchUser = async (e) => {
-    e.preventDefault();
+  const handleSearchUser = async () => {
+    if(!userName.trim()) {
+      setHasSearched(false);
+      setUserName("");
+      return;
+    }
 
     setHasSearched(true);
 
@@ -30,7 +34,7 @@ const SearchBox = () => {
     );
 
     // dispatch()
-    console.log(chats, res);   
+    console.log(res);   
   };
 
   const accessChat = async (user) => {
@@ -48,11 +52,18 @@ const SearchBox = () => {
   };
 
   useEffect(() => {
+    const timer = setTimeout(handleSearchUser, 300);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [userName]);
+
+  useEffect(() => {
     inputRef.current?.focus();
 
-    const timeout = setTimeout(() => {
-      setIsVisible(true);
-    }, 10);
+    setIsVisible(true);
+    // const timeout = setTimeout(() => {
+    // }, 10);
 
     const handleClickOutside = (e) => {
       if (!searchBoxEle.current.contains(e.target)) {
@@ -62,7 +73,7 @@ const SearchBox = () => {
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      clearTimeout(timeout);
+      // clearTimeout(timeout);
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
@@ -84,16 +95,15 @@ const SearchBox = () => {
       >
         <input
           ref={inputRef}
-          onChange={(e) => {
-            setUserName(e.target.value);
-            handleSearchUser(e);
-          }}
+          onChange={(e) => setUserName(e.target.value)}
           value={userName}
           placeholder="Search By Name Or Email.."
+          onFocus={() => setHasSearched(true)}
+          onBlur={() => setHasSearched(false)}
           type="search"
           name="search"
         />
-        <button>Go</button>
+        {/* <button>Go</button> */}
       </form>
 
       <div className={`${styles.search__results__container}`}>

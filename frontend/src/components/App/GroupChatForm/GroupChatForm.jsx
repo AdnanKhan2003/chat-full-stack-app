@@ -19,11 +19,11 @@ import {
 // import { setSocket } from "../../../store/slices/socketSlice";
 
 const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
-  const [ chatNameInput, setChatNameInput ] = useState("");
-  const [ usersInput, setUsersInput ] = useState("");
+  const [chatNameInput, setChatNameInput] = useState("");
+  const [usersInput, setUsersInput] = useState("");
 
-  const [ users, setUsers ] = useState([]);
-  const [ userSearchResults, setUserSearchResults ] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [userSearchResults, setUserSearchResults] = useState([]);
 
   const { myChats, activeChat } = useSelector((state) => state.chats);
   const { user } = useSelector((state) => state.isAuth);
@@ -68,8 +68,8 @@ const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
       return;
     }
 
-    console.log('gcf', res);
-    
+    console.log("gcf", res);
+
     setUsersInput("");
 
     onClose(false);
@@ -86,8 +86,7 @@ const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
       method: "PUT",
       body: JSON.stringify({ chatId: activeChat._id, userId: user._id }),
     });
-    console.log('ADDkia', res);
-
+    console.log("ADDkia", res);
 
     if (res) {
       console.log("add user", res);
@@ -100,9 +99,9 @@ const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
         position: "top",
       });
       dispatch(handleAddUserToGroup(res));
-    } else if(res == null){
+    } else if (res == null) {
       console.log(res);
-      
+
       showToast({
         type: "error",
         title: "Only Admin Can Add Users!",
@@ -155,17 +154,19 @@ const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
 
   const handleRemoveUser = (id, editUser = false) => {
     console.log(id, activeChat.groupAdmin._id);
-    if(user._id !== activeChat.groupAdmin._id) {
-          showToast({
-            type: "error",
-            title: "Only Admin Can Remove User!",
-            message: "You can't Remove Users!",
-            duration: 3000,
-            show: true,
-            position: "top",
-          });
+    if (editUser) {
+      if (user._id !== activeChat.groupAdmin._id) {
+        showToast({
+          type: "error",
+          title: "Only Admin Can Remove User!",
+          message: "You can't Remove Users!",
+          duration: 3000,
+          show: true,
+          position: "top",
+        });
         return;
-    };
+      }
+    }
 
     setUsers((prevState) => {
       if (prevState.length > 0) {
@@ -174,7 +175,7 @@ const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
       return prevState;
     });
 
-    if ((editUser = true)) {
+    if (editUser) {
       handleRemoveUserFromGroup(id);
     }
   };
@@ -190,7 +191,7 @@ const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
 
     if (res) {
       console.log("remove user", res);
-      if(res.message == 'You Left Group') {
+      if (res.message == "You Left Group") {
         onClose();
         showToast({
           type: "success",
@@ -202,21 +203,18 @@ const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
         });
         dispatch(triggerRefetch(true));
       } else {
-
-      showToast({
-        type: "success",
-        title: "User Removed!",
-        message: "Removed User Successfully!",
-        duration: 3000,
-        show: true,
-        position: "top",
-      });
-      dispatch(handleRemoveUserFromGroupAction(res));
-      console.log(res);
-    }
-
-    }
-     else if (res == null) {
+        showToast({
+          type: "success",
+          title: "User Removed!",
+          message: "Removed User Successfully!",
+          duration: 3000,
+          show: true,
+          position: "top",
+        });
+        dispatch(handleRemoveUserFromGroupAction(res));
+        console.log(res);
+      }
+    } else if (res == null) {
       showToast({
         type: "error",
         title: "Only Admin Can Remove User!",
@@ -225,8 +223,7 @@ const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
         show: true,
         position: "top",
       });
-    }
-     else {
+    } else {
       showToast({
         type: "error",
         title: "Couldn't Remove User!",
@@ -238,14 +235,15 @@ const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
     }
   };
 
-  const handleChangeUsers = (value) => {
-    handleSearchUsers(value);
-    console.log("value", value);
-    console.log("users", users);
-  };
-
   const handleSearchUsers = async (value) => {
     value = value.toLowerCase();
+
+    if (!value.trim()) {
+      setUserSearchResults([]);
+      setUsersInput("");
+      return;
+    }
+
     const res = await fetchData(
       `http://localhost:3000/api/auth/users?search=${value}`,
       {
@@ -264,7 +262,7 @@ const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
         onCreate={handleCreateGroup}
         onAddUser={handleAddUsers}
         onRemoveUser={handleRemoveUser}
-        onChangeUser={handleChangeUsers}
+        onChangeUser={handleSearchUsers}
         usersInput={usersInput}
         userSearchResults={userSearchResults}
         onSuccess={onSuccess}
@@ -291,7 +289,7 @@ const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
           <input
             type="search"
             name="users"
-            onChange={(e) => handleChangeUsers(e.target.value)}
+            onChange={(e) => handleSearchUsers(e.target.value)}
             value={usersInput}
             className={`${styles.users__input}`}
             placeholder="Add Users. eg: Adnan"
@@ -309,7 +307,7 @@ const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
                 );
               })}
           </div>
-          <div className="search__results__container">
+          <div className={`${styles.search__results__container}`}>
             {userSearchResults &&
               userSearchResults.length > 0 &&
               userSearchResults.map((user) => {
