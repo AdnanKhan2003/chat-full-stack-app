@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFetch } from "../../../hooks/useFetch";
 
 import User from "../User/User";
@@ -33,6 +33,16 @@ const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
   const { fetchData, data, isLoading, error } = useFetch();
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      handleSearchUsers();
+    }, 300); 
+    
+    return () => {
+      clearTimeout(timeout);
+    }
+  }, [usersInput]);
 
   const handleCreateGroup = async () => {
     const chatName = chatNameInput.trim();
@@ -235,8 +245,8 @@ const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
     }
   };
 
-  const handleSearchUsers = async (value) => {
-    value = value.toLowerCase();
+  const handleSearchUsers = async () => {
+    const value = usersInput.toLowerCase();
 
     if (!value.trim()) {
       setUserSearchResults([]);
@@ -251,10 +261,28 @@ const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
       }
     );
 
-    setUsersInput((prevState) => value);
-
     setUserSearchResults(res);
   };
+  // const handleSearchUsers = async (value) => {
+  //   value = value.toLowerCase();
+
+  //   if (!value.trim()) {
+  //     setUserSearchResults([]);
+  //     setUsersInput("");
+  //     return;
+  //   }
+
+  //   const res = await fetchData(
+  //     `http://localhost:3000/api/auth/users?search=${value}`,
+  //     {
+  //       method: "GET",
+  //     }
+  //   );
+
+  //   setUsersInput((prevState) => value);
+
+  //   setUserSearchResults(res);
+  // };
 
   if (edit) {
     return (
@@ -264,6 +292,7 @@ const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
         onRemoveUser={handleRemoveUser}
         onChangeUser={handleSearchUsers}
         usersInput={usersInput}
+        setUsersInput={setUsersInput}
         userSearchResults={userSearchResults}
         onSuccess={onSuccess}
         chatUsers={users}
@@ -289,7 +318,7 @@ const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
           <input
             type="search"
             name="users"
-            onChange={(e) => handleSearchUsers(e.target.value)}
+            onChange={(e) => setUsersInput(e.target.value)}
             value={usersInput}
             className={`${styles.users__input}`}
             placeholder="Add Users. eg: Adnan"

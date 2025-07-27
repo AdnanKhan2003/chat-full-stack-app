@@ -14,6 +14,7 @@ const GroupChatEditForm = ({
   onRemoveUser,
   onChangeUser,
   usersInput,
+  setUsersInput,
   userSearchResults,
   onSuccess,
 }) => {
@@ -81,7 +82,7 @@ const GroupChatEditForm = ({
           <input
             type="search"
             name="users"
-            onChange={(e) => onChangeUser(e.target.value)}
+            onChange={(e) => setUsersInput(e.target.value)}
             value={usersInput}
             className={`${styles.users__input}`}
             placeholder="Add Users. eg: Adnan"

@@ -78,7 +78,6 @@ const ChatMessages = () => {
           console.log("q", newMessage);
           dispatch(handleAddNotification(newMessage));
         }
-
       } else {
         setMessages((prevMessages) => ({
           ...prevMessages,
@@ -108,8 +107,8 @@ const ChatMessages = () => {
   // useEffect(() => {
   //   const handleJoinChat = async (chatId) => {
   //     console.log('chatmessage wala chatId', chatId);
-      
-  //     dispatch(myChatThunk());          
+
+  //     dispatch(myChatThunk());
   //   };
 
   //   socketRef.current.on('join chat', handleJoinChat);

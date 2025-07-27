@@ -9,19 +9,19 @@ import { chatThunk } from "../../../store/thunks/chatThunk";
 import { showToast } from "../../../lib/toast";
 
 const SearchBox = () => {
-  const [ userName, setUserName ] = useState("");
-  const [ isVisible, setIsVisible ] = useState(false);
-  const [ hasSearched, setHasSearched ] = useState();
+  const [userName, setUserName] = useState("");
+  const [isVisible, setIsVisible] = useState(false);
+  const [hasSearched, setHasSearched] = useState();
   const { fetchData, data, isLoading, error } = useFetch();
-  const { chats } = useSelector(state => state.chats);
+  const { chats } = useSelector((state) => state.chats);
 
   const inputRef = useRef();
   const searchBoxEle = useRef();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
+
   const handleSearchUser = async () => {
-    if(!userName.trim()) {
+    if (!userName.trim()) {
       setHasSearched(false);
       setUserName("");
       return;
@@ -34,7 +34,7 @@ const SearchBox = () => {
     );
 
     // dispatch()
-    console.log(res);   
+    console.log(res);
   };
 
   const accessChat = async (user) => {
@@ -46,7 +46,7 @@ const SearchBox = () => {
       message: "Let's Send Hi!",
       duration: 3000,
       show: true,
-      position: 'top'
+      position: "top",
     });
     navigate("/");
   };
