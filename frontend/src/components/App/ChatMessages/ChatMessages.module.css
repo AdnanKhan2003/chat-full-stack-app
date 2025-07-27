@@ -91,6 +91,20 @@
   display: none;
 }
 
+.chatpartner__name__container {
+  display: flex;
+  align-items: center;
+}
+
+.chat__profile__pic__mobile {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: .61rem;
+  display: none;
+}
+
 .chat__details {
   cursor: pointer;
 }
@@ -129,6 +143,9 @@
     display: block;
     cursor: pointer;
     pointer-events: all;
+  }
+  .chat__profile__pic__mobile {
+    display: flex;
   }
   .visible {
     opacity: 1;

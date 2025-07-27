@@ -45,15 +45,16 @@ io.on("connection", (socket) => {
 
   socket.on("setup", (userData) => {
     socket.join(userData._id);
+    socket.userId = userData._id;
     socket.emit("connected");
     console.log(`Solo room by  ${userData._id}`);
   });
 
   socket.on("join chat", (room) => {
     socket.join(room);
+    console.log(`Chat room joined by: ${room}`);
     // if (!refetch) {
     //   socket.join(room);
-    //   console.log(`Chat room joined by: ${room}`);
     //   return;
     // }
 
@@ -62,9 +63,8 @@ io.on("connection", (socket) => {
 
   socket.on("new message", (newMessageReceived) => {
     const chat = newMessageReceived.chat;
-    console.log(newMessageReceived, chat);
 
-    if (!chat.users) return console.log("chat.users not defined");
+    if (!chat.users) return;
 
     chat.users.forEach((user) => {
       if (user._id == newMessageReceived.sender._id) return;
@@ -81,9 +81,9 @@ io.on("connection", (socket) => {
     socket.in(room).emit("stop typing", room);
   });
 
-  socket.off("setup", () => {
-    console.log("USER DISCONNECTED");
-    socket.leave(userData._id);
+  socket.on("disconnect", () => {
+    console.log("USER DISCONNECTED " + socket.userId);
+    socket.leave(socket.userId);
   });
 });
 

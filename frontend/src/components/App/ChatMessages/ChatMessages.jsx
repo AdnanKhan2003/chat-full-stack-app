@@ -238,11 +238,15 @@ const ChatMessages = () => {
                 onClick={() => dispatch(handleGoToChats())}
                 className={`${styles.btn__back}`}
               />
-              <h3 className="message__receiver">
-                {activeChat.isGroupChat
-                  ? activeChat.chatName
-                  : chatPartner?.name}
-              </h3>
+              <div className={`${styles.chatpartner__name__container}`}>
+                {activeChat && !activeChat.isGroupChat && <img className={`${styles.chat__profile__pic__mobile}`} src={chatPartner.profilePic} />}
+                <h3 className="message__receiver">
+                  {activeChat.isGroupChat
+                    ? activeChat.chatName
+                    : chatPartner?.name}
+                </h3>
+              </div>
+
               <IoEye
                 className={`${styles.chat__details}`}
                 onClick={handleChatDetails}
