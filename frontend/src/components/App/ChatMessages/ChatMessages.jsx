@@ -29,7 +29,6 @@ const ChatMessages = () => {
   const { activeChat, myChats, goToChat } = useSelector((state) => state.chats);
   const { notifications } = useSelector((state) => state.notifications);
   const { user } = useSelector((state) => state.isAuth);
-  const { socket } = useSelector((state) => state.socket);
 
   const [socketConnected, setSocketConnected] = useState(false);
 

@@ -179,6 +179,11 @@ export const removeFromGroup = async (req, res, next) => {
       });
     }
 
+    if(chat.groupAdmin._id.toString() === userId.toString()) {
+      const result = await Chat.findByIdAndDelete(chatId);
+      return res.status(200).json({ message: "You Left Group", result });
+    }
+
     const removed = await Chat.findByIdAndUpdate(chatId, {
         $pull: { users: userId }
     }, {

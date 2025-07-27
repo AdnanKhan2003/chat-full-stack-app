@@ -18,6 +18,7 @@ const GroupChatEditForm = ({
   onSuccess,
 }) => {
   const { activeChat, chats, myChats } = useSelector((state) => state.chats);
+  const { user } = useSelector((state) => state.isAuth);
   const [chatNameInput, setChatNameInput] = useState(activeChat.chatName || "");
   const { fetchData, data, isLoading, error } = useFetch();
 

@@ -14,7 +14,7 @@ const initialState = {
   activeChat: "",
 
   refetchFlag: false,
-  goToChat: false,
+  goToChat: true,
 
   isLoading: false,
   error: null,

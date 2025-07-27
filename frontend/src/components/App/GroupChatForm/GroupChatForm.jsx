@@ -14,6 +14,7 @@ import {
   handleAddUserToGroup,
   handlePushNotificationChat,
   handleRemoveUserFromGroup as handleRemoveUserFromGroupAction,
+  triggerRefetch,
 } from "../../../store/slices/chatSlice";
 // import { setSocket } from "../../../store/slices/socketSlice";
 
@@ -25,6 +26,7 @@ const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
   const [ userSearchResults, setUserSearchResults ] = useState([]);
 
   const { myChats, activeChat } = useSelector((state) => state.chats);
+  const { user } = useSelector((state) => state.isAuth);
   // const { socket } = useSelector((state) => state.socket);
 
   const dispatch = useDispatch();
@@ -152,7 +154,18 @@ const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
   };
 
   const handleRemoveUser = (id, editUser = false) => {
-    console.log(id);
+    console.log(id, activeChat.groupAdmin._id);
+    if(user._id !== activeChat.groupAdmin._id) {
+          showToast({
+            type: "error",
+            title: "Only Admin Can Remove User!",
+            message: "You can't Remove Users!",
+            duration: 3000,
+            show: true,
+            position: "top",
+          });
+        return;
+    };
 
     setUsers((prevState) => {
       if (prevState.length > 0) {
@@ -177,6 +190,19 @@ const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
 
     if (res) {
       console.log("remove user", res);
+      if(res.message == 'You Left Group') {
+        onClose();
+        showToast({
+          type: "success",
+          title: "You Left Group!",
+          message: "Group Deleted Successfully!",
+          duration: 3000,
+          show: true,
+          position: "top",
+        });
+        dispatch(triggerRefetch(true));
+      } else {
+
       showToast({
         type: "success",
         title: "User Removed!",
@@ -187,7 +213,10 @@ const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
       });
       dispatch(handleRemoveUserFromGroupAction(res));
       console.log(res);
-    } else if (res == null) {
+    }
+
+    }
+     else if (res == null) {
       showToast({
         type: "error",
         title: "Only Admin Can Remove User!",
@@ -196,7 +225,8 @@ const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
         show: true,
         position: "top",
       });
-    } else {
+    }
+     else {
       showToast({
         type: "error",
         title: "Couldn't Remove User!",

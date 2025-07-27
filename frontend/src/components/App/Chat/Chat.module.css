@@ -18,9 +18,11 @@
     object-fit: cover;
 } 
 
+.chat__container:hover,
 .active {
     /* background-color: antiquewhite; */
     background-color: rgba(255, 255, 224, .51);
+    transition: background-color .3s ease-in-out;
 }
 
 

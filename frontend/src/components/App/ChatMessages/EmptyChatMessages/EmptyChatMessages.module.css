@@ -4,3 +4,19 @@
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+.btn__back {
+    display: none;
+}
+
+@media (max-width: 650px) {
+    .btn__back {
+      display: block;
+      cursor: pointer;
+      pointer-events: all;
+      position: absolute;
+      top: 10px;
+      left: 2rem;
+    }
+  }
+  
