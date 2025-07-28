@@ -1,3 +1,5 @@
+import { AnimatePresence, motion } from "motion/react";
+
 import { IoIosSearch } from "react-icons/io";
 import { SlLogout } from "react-icons/sl";
 import { CgProfile } from "react-icons/cg";
@@ -78,35 +80,6 @@ const Header = () => {
     }
   };
 
-  // const handleChange = async (e) => {
-  //     const file = e.target.files[0];
-
-  //     if (!file) return;
-
-  //     const reader = new FileReader();
-
-  //     reader.onloadend = async () => {
-  //       const base64String = reader.result;
-  //       console.log(base64String);
-
-  //       const res = await fetchData('http://localhost:3000/api/auth/updateProfilePic', {
-  //         method: 'POST',
-  //         body: JSON.stringify({
-  //           userId: user._id,
-  //           profilePic: base64String
-  //         })
-  //       });
-
-  //       if(res) {
-
-  //         console.log(res);
-  //       }
-
-  //     };
-
-  //     reader.readAsDataURL(file);
-  // };
-
   return (
     <>
       {showModal && (
@@ -117,25 +90,6 @@ const Header = () => {
               // onChange={handleChange}
               ref={inputFileRef}
             />
-            {/* <div className={`${styles.avatar__container}`}>
-              <img
-                src={loggedUser.profilePic}
-                className={`${styles.single__chat__profile__pic}`}
-                alt=""
-              />
-              <div onClick={() => inputFileRef.current.click()} className={`${styles.edit__profile__pic__icon}`}>
-                <MdEdit />
-              </div>
-              <input
-                type="file"
-                name="profile__pic"
-                accept="image/*"
-                ref={inputFileRef}
-                className={`${styles.hidden}`}
-                onChange={handleChange}
-              />
-            </div> */}
-
             <h4>{loggedUser.name}</h4>
             <p>{loggedUser.email}</p>
           </div>
@@ -165,106 +119,144 @@ const Header = () => {
             <h1>TalkAbit</h1>
           </div>
 
-          <div className="nav__right">
-            {/* icon */}
-            <FaBell
-              onClick={() => setShowNotifications(true)}
-              onMouseOver={() => setShowNotifications(false)}
-              // onMouseLeave={() => setShowNotifications(false)}
-              className={`${styles.icon__bell}`}
-            />
-            {notifications && notifications.length > 0 && (
-              <span className={`${styles.badge}`}>{notifications.length}</span>
-            )}
-            <img
-              onClick={() => setShowProfileOptions((prevState) => !prevState)}
-              className={`${styles.profile__pic}`}
-              src={profilePic || user.profilePic}
-              alt=""
-            />
-            {showProfileOptions && (
-              <div className={`${styles.profile__options}`}>
-                <span className={`${styles.option}`}>
-                  <CgProfile />
-                  <p
-                    className={`${styles.extra__links}`}
-                    // onMouseDown={() => setShowProfileOptions(false)}
-                    onClick={(e) => {
-                      e.stopPropagation();
+          <div className={`${styles.nav__right}`}>
+            <div 
+            onMouseEnter={() => setShowNotifications(true)}
+            onMouseLeave={() => setShowNotifications(false)}
+            >
+              <FaBell
+                onClick={() => setShowNotifications((prev) => !prev)}
+                className={`${styles.icon__bell}`}
+              />
 
-                      setShowModal(true);
-                      setShowProfileOptions(false);
-                    }}
+              <AnimatePresence>
+                {notifications && notifications.length > 0 && (
+                  <motion.span
+                    initial={{ y: -10, opacity: 0, duration: 0.3 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: 10, opacity: 0 }}
+                    className={`${styles.badge}`}
                   >
-                    My Profile
-                  </p>
-                </span>
-                <span className={`${styles.option}`}>
-                  <SlLogout />
-                  <p
-                    className={`${styles.extra__links}`}
-                    onMouseLeave={() => setShowProfileOptions(false)}
-                    onClick={handleLogout}
-                  >
-                    Logout
-                  </p>
-                </span>
-              </div>
-            )}
-            {showNotifications && (
-              <div className={`${styles.notifications__container}`}>
-                {notifications.length > 0 &&
-                  notifications.map((notification, i) => {
-                    const handleClickNotification = async () => {
-                      let matchChat = myChats.find(
-                        (c) => c._id == notification.chat._id
-                      );
-
-                      console.log('header handleNot', activeChat);
-                      console.log(activeChat);
-                      
-                      if(!matchChat) {
-                        const result = await dispatch(myChatThunk);
-                        if(myChatThunk.fulfilled.match(result)) {
-                          matchChat = result.payload.find(c => c._id.toString() === notification.chat._id.toString());
-                        }
-                      }
-                      
-                      if(matchChat){
-                        dispatch(handleActiveChat(matchChat));
-                      } else {
-                        dispatch(handleActiveChat(notification.chat));
-                      }
-                      console.log('x', activeChat);
-                      
-                      dispatch(handleRemoveNotificationById(notification._id));
-                      console.log('y', notification, matchChat, activeChat);
-                      dispatch(triggerRefetch(true));
-                      dispatch(
-                        handlePushNotificationChat(notification)
-                      );
-                      console.log('z');
-                    };
-
-                    return (
-                      <p
-                        onClick={handleClickNotification}
-                        key={i}
-                        className={`${styles.notification}`}
-                      >
-                        New Message from {notification.sender.name}
-                      </p>
-                    );
-                  })}
-                {notifications.length == 0 && (
-                  <p className={`${styles.notification}`}>No Notifications</p>
+                    {notifications.length}
+                  </motion.span>
                 )}
-                {/* {
-                 ( notifications.length > 0 || true)&&
-                <p className={`${styles.notification}`}>New Message from Alu</p>
-                } */}
-              </div>
-            )}
+              </AnimatePresence>
+
+              <AnimatePresence>
+                {showNotifications && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 0 }}
+                    className={`${styles.notifications__container}`}
+                  >
+                    {notifications.length > 0 &&
+                      notifications.map((notification, i) => {
+                        const handleClickNotification = async () => {
+                          let matchChat = myChats.find(
+                            (c) => c._id == notification.chat._id
+                          );
+
+                          console.log("header handleNot", activeChat);
+                          console.log(activeChat);
+
+                          if (!matchChat) {
+                            const result = await dispatch(myChatThunk);
+                            if (myChatThunk.fulfilled.match(result)) {
+                              matchChat = result.payload.find(
+                                (c) =>
+                                  c._id.toString() ===
+                                  notification.chat._id.toString()
+                              );
+                            }
+                          }
+
+                          if (matchChat) {
+                            dispatch(handleActiveChat(matchChat));
+                          } else {
+                            dispatch(handleActiveChat(notification.chat));
+                          }
+                          console.log("x", activeChat);
+
+                          dispatch(
+                            handleRemoveNotificationById(notification._id)
+                          );
+                          console.log("y", notification, matchChat, activeChat);
+                          dispatch(triggerRefetch(true));
+                          dispatch(handlePushNotificationChat(notification));
+                          console.log("z");
+                        };
+
+                        return (
+                          <motion.p
+                            initial={{ y: -15, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            exit={{ y: 0, opacity: 0, scale: -1 }}
+                            transition={{ duration: 0.53 }}
+                            onClick={handleClickNotification}
+                            key={i}
+                            className={`${styles.notification}`}
+                          >
+                            New Message from {notification.sender.name}
+                          </motion.p>
+                        );
+                      })}
+                    {notifications.length == 0 && (
+                      <p className={`${styles.notification}`}>
+                        No Notifications
+                      </p>
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+            <div
+            onMouseEnter={() => setShowProfileOptions(true)}
+            onMouseLeave={() => setShowProfileOptions(false)}
+            >
+              <img
+                onClick={() => setShowProfileOptions((prevState) => !prevState)}
+                className={`${styles.profile__pic}`}
+                src={profilePic || user.profilePic}
+                alt=""
+              />
+
+              <AnimatePresence>
+                {showProfileOptions && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 0 }}
+                    className={`${styles.profile__options}`}
+                  >
+                    <span className={`${styles.option}`}>
+                      <CgProfile />
+                      <p
+                        className={`${styles.extra__links}`}
+                        onClick={(e) => {
+                          e.stopPropagation();
+
+                          setShowModal(true);
+                          setShowProfileOptions(false);
+                        }}
+                      >
+                        My Profile
+                      </p>
+                    </span>
+                    <span className={`${styles.option}`}>
+                      <SlLogout />
+                      <p
+                        className={`${styles.extra__links}`}
+                        onClick={handleLogout}
+                      >
+                        Logout
+                      </p>
+                    </span>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
             {/* profilePic */}
           </div>
         </nav>

@@ -1,3 +1,5 @@
+import { motion } from "motion/react";
+
 import { useSelector } from "react-redux";
 
 import { limitString } from "../../../lib/utils.js";
@@ -18,13 +20,22 @@ const Chat = ({ chat, onSelect }) => {
     "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
 
   return (
-    <div
+    <motion.div
+      initial={{ y: -15 }}
+      animate={{
+        y: 0
+      }}
+      transition= {{
+        type: "spring",
+        stiffness: 100,
+        damping: 15,
+        duration: .5,
+      }}
       onClick={() => onSelect(chat)}
       className={`${styles.chat__container} ${
         isActive ? `${styles.active}` : ""
       }`}
     >
-
       <img
         className={`${styles.chat__profile__pic}`}
         src={chat.isGroupChat ? groupChatImg : chatPartner.profilePic}
@@ -34,7 +45,7 @@ const Chat = ({ chat, onSelect }) => {
         <h4>{chat.chatName === "sender" ? chatPartner.name : chat.chatName}</h4>
         <p>{limitString(chat.latestMessage?.content) || ""}</p>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

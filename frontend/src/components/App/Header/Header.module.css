@@ -15,7 +15,7 @@
 }
 
 .search__input__container {
-  border: 1px solid #b31e1e;
+  border: 1px solid #ccc;
   background: white;
   display: flex;
   justify-content: space-between;
@@ -43,6 +43,11 @@
   background-color: transparent;
   width: 100%;
   color: var(--dark-color);
+}
+
+.nav__right {
+  display: flex;
+  align-items: center;
 }
 
 .app__name > h1 {
@@ -107,7 +112,7 @@
   padding: 0.61rem 0;
   position: absolute;
   right: 97px;
-  top: 38px;
+  top: 43px;
   border-radius: 0.3rem;
   border: 1px solid #ccc;
   background-color: var(--light-color);

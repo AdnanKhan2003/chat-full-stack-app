@@ -12,6 +12,7 @@ import { myChatThunk } from "../../../store/thunks/myChatThunk ";
 import { useState } from "react";
 import ModalPortal from "../../../ui/Modal/Modal";
 import GroupChatForm from "../GroupChatForm/GroupChatForm";
+import { AnimatePresence } from "motion/react";
 
 const Sidebar = () => {
   const dispatch = useDispatch();
@@ -69,14 +70,17 @@ const Sidebar = () => {
 
   return (
     <>
-      {showModal && (
-        <ModalPortal onClose={setShowModal} showModal={showModal}>
-          <GroupChatForm
-            onClose={setShowModal}
-            onSuccess={handleGroupChatCreated}
-          />{" "}
-        </ModalPortal>
-      )}
+      <AnimatePresence>
+        {showModal && (
+          <ModalPortal onClose={setShowModal} showModal={showModal}>
+            <GroupChatForm
+              onClose={setShowModal}
+              onSuccess={handleGroupChatCreated}
+            />{" "}
+          </ModalPortal>
+        )}
+      </AnimatePresence>
+
       <div
         className={`${styles.sidebar__container} ${
           goToChat ? styles.not__visible : styles.visible

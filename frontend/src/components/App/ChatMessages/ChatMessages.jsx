@@ -1,3 +1,5 @@
+import { AnimatePresence, motion } from "motion/react";
+
 import { useDispatch, useSelector } from "react-redux";
 import { BsSend } from "react-icons/bs";
 import { IoEye } from "react-icons/io5";
@@ -240,11 +242,15 @@ const ChatMessages = () => {
               />
               <div className={`${styles.chatpartner__name__container}`}>
                 {activeChat && !activeChat.isGroupChat && <img className={`${styles.chat__profile__pic__mobile}`} src={chatPartner.profilePic} />}
-                <h3 className="message__receiver">
+                <motion.h3
+                initial={{ transform: 'translateX(-20px)', opacity: 0 }}
+                animate={{ transform: 'translateX(0px)', opacity: 1, transition: { duration: .5 } }}
+                exit={{ transform: 'translateX(-20px)', opacity: 0 }}
+                 className="message__receiver">
                   {activeChat.isGroupChat
                     ? activeChat.chatName
                     : chatPartner?.name}
-                </h3>
+                </motion.h3>
               </div>
 
               <IoEye

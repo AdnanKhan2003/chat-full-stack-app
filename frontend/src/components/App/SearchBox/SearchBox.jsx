@@ -1,3 +1,5 @@
+import { motion } from "motion/react";
+
 import { useEffect, useRef, useState } from "react";
 import styles from "./SearchBox.module.css";
 import { useNavigate } from "react-router";
@@ -79,7 +81,11 @@ const SearchBox = () => {
   }, []);
 
   return (
-    <div
+    <motion.div
+    initial={{ opacity: 0, x: -15 }}
+    animate={{ opacity: 1, x: 0 }}
+    exit={{ opacity: 0, x: 15 }}
+    transition={{ type: "spring", duration: 0.35 }}
       ref={searchBoxEle}
       className={`${styles.searchbox__container} ${
         isVisible ? styles.show : ""
@@ -99,7 +105,7 @@ const SearchBox = () => {
           value={userName}
           placeholder="Search By Name Or Email.."
           onFocus={() => setHasSearched(true)}
-          onBlur={() => setHasSearched(false)}
+          // onBlur={() => setHasSearched(false)}
           type="search"
           name="search"
         />
@@ -122,7 +128,7 @@ const SearchBox = () => {
 
         {!hasSearched && !isLoading && <p>Search User By Name Or Email</p>}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
