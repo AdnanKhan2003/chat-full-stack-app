@@ -9,6 +9,7 @@ export const useFetch = () => {
       setIsLoading(true);
       setError(null);
 
+
     try {
       const res = await fetch(url, {
         ...options,
