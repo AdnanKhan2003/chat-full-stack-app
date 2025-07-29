@@ -43,7 +43,7 @@ app.use("/api/message", messageRoutes);
 app.use(notFound);
 app.use(errorHandler);
 
-if(process.env.ENV_MODE == 'production') {
+if(process.env.NODE_ENV == 'production') {
   app.use(express.static(path.join(__dirname, '../frontend/dist/')));
 
   app.get('/*', (req, res) => {
