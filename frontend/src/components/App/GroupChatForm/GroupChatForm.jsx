@@ -16,7 +16,7 @@ import {
   handleRemoveUserFromGroup as handleRemoveUserFromGroupAction,
   triggerRefetch,
 } from "../../../store/slices/chatSlice";
-// import { setSocket } from "../../../store/slices/socketSlice";
+import { ENDPOINT, ENDPOINT_API } from "../../../lib/utils";
 
 const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
   const [chatNameInput, setChatNameInput] = useState("");
@@ -61,7 +61,7 @@ const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
 
     console.log(chatName, users);
 
-    const res = await fetchData("http://localhost:3000/api/chat/group", {
+    const res = await fetchData(`${ENDPOINT_API}/chat/group`, {
       method: "POST",
       body: JSON.stringify({ name: chatName, users }),
     });
@@ -92,7 +92,7 @@ const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
   const handleEditGroupUsers = async (user) => {
     console.log(user, activeChat);
 
-    const res = await fetchData("http://localhost:3000/api/chat/groupadd", {
+    const res = await fetchData(`${ENDPOINT_API}/chat/groupadd`, {
       method: "PUT",
       body: JSON.stringify({ chatId: activeChat._id, userId: user._id }),
     });
@@ -193,7 +193,7 @@ const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
   const handleRemoveUserFromGroup = async (id) => {
     console.log("w");
 
-    const res = await fetchData("http://localhost:3000/api/chat/groupremove", {
+    const res = await fetchData(`${ENDPOINT_API}/chat/groupremove`, {
       method: "PUT",
       body: JSON.stringify({ chatId: activeChat._id, userId: id }),
     });
@@ -255,7 +255,7 @@ const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
     }
 
     const res = await fetchData(
-      `http://localhost:3000/api/auth/users?search=${value}`,
+      `${ENDPOINT_API}/auth/users?search=${value}`,
       {
         method: "GET",
       }

@@ -114,19 +114,6 @@ const Sidebar = () => {
                   />
                 );
               })}
-          {/* {console.log(myChats, 'sidebar', w)} */}
-          {/* {!isLoading &&
-          Array.isArray(chats) &&
-          chats.length > 0 &&
-          chats.map((chat) => {
-            const loggedUserId = user?._id;
-            const chatPartner = chat.users.find(
-              (user) => user._id !== loggedUserId
-            );
-            return (
-              <Chat key={chat._id} chat={chat} onSelect={handleSelectedChat} />
-            );
-          })} */}
         </div>
       </div>
     </>

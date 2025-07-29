@@ -8,6 +8,8 @@ import UserBadge from "../../UserBadge/UserBadge";
 import styles from "../GroupChatForm.module.css";
 import { showToast } from "../../../../lib/toast";
 
+import { ENDPOINT_API } from "../../../../lib/utils";
+
 const GroupChatEditForm = ({
   onCreate,
   onAddUser,
@@ -26,7 +28,7 @@ const GroupChatEditForm = ({
   
   const handleEditGroupChatName = async () => {
 
-    const res = await fetchData("http://localhost:3000/api/chat/rename", {
+    const res = await fetchData(`${ENDPOINT_API}/chat/rename`, {
       method: "PUT",
       body: JSON.stringify({ chatId: activeChat._id, chatName: chatNameInput }),
     });

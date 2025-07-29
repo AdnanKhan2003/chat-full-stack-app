@@ -9,6 +9,7 @@ import User from "../User/User";
 import Spinner from "../../../ui/Spinner/Spinner";
 import { chatThunk } from "../../../store/thunks/chatThunk";
 import { showToast } from "../../../lib/toast";
+import { ENDPOINT_API } from "../../../lib/utils";
 
 const SearchBox = () => {
   const [userName, setUserName] = useState("");
@@ -32,7 +33,7 @@ const SearchBox = () => {
     setHasSearched(true);
 
     const res = await fetchData(
-      `http://localhost:3000/api/auth/users?search=${userName.toLowerCase()}`
+      `${ENDPOINT_API}/auth/users?search=${userName.toLowerCase()}`
     );
 
     // dispatch()

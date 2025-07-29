@@ -22,8 +22,7 @@ import ChatMessageInput from "./ChatMessageInput/ChatMessageInput.jsx";
 import { useFetch } from "../../../hooks/useFetch.js";
 import { handleAddNotification } from "../../../store/slices/notificationSlice.js";
 import { setSocket } from "../../../store/slices/socketSlice.js";
-
-const ENDPOINT = "http://localhost:3000";
+import { ENDPOINT, ENDPOINT_API } from "../../../lib/utils.js";
 // let socket;
 
 const ChatMessages = () => {
@@ -134,7 +133,7 @@ const ChatMessages = () => {
       return;
     }
 
-    const res = await fetchData("http://localhost:3000/api/message", {
+    const res = await fetchData(`${ENDPOINT_API}/message`, {
       method: "POST",
       body: JSON.stringify({
         // chatId: activeChat.users.find(user => user._id !== loggedUserId)._id,
@@ -185,7 +184,7 @@ const ChatMessages = () => {
 
   const fetchMessages = async () => {
     const res = await fetchData(
-      `http://localhost:3000/api/message/${activeChat._id}`,
+      `${ENDPOINT_API}/message/${activeChat._id}`,
       {
         method: "GET",
       }

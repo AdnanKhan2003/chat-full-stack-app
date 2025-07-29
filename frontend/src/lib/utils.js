@@ -32,3 +32,6 @@ export const limitString = (string, limit = 21) => {
     const shortedString = string.slice(0, limit) + '...';    
     return shortedString;    
 };
+
+export const ENDPOINT = import.meta.env.MODE == 'development' ? 'http://localhost:3000' : '/';
+export const ENDPOINT_API = import.meta.env.MODE == 'development' ? 'http://localhost:3000/api' : '/api';

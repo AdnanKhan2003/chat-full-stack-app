@@ -2,7 +2,7 @@ import { FaRegEye } from "react-icons/fa";
 
 import styles from "./Signup.module.css";
 import { useState } from "react";
-import { compareString, isEmail, isEmpty } from "../../lib/utils";
+import { compareString, ENDPOINT_API, isEmail, isEmpty } from "../../lib/utils";
 import Input from "../../components/Input/Input.jsx";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -126,7 +126,7 @@ const Signup = () => {
       return;
     }
 
-    const res = await fetchData("http://localhost:3000/api/auth/signup", {
+    const res = await fetchData(`${ENDPOINT_API}/auth/signup`, {
       method: "POST",
       body: JSON.stringify(formInputData),
     });

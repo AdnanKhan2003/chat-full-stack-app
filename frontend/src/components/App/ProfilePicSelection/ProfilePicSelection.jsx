@@ -10,6 +10,7 @@ import Spinner from "../../../ui/Spinner/Spinner";
 import styles from "./ProfilePicSelection.module.css";
 import { showToast } from "../../../lib/toast";
 import { handleUpdateProfilePic } from "../../../store/slices/authSlice";
+import { ENDPOINT_API } from "../../../lib/utils";
 
 const ProfilePicSelection = forwardRef(({ loggedUser, onChange }, ref) => {
   const dispatch = useDispatch();
@@ -34,7 +35,7 @@ const ProfilePicSelection = forwardRef(({ loggedUser, onChange }, ref) => {
 
       setPreview((prevState) => ({ ...prevState, isLoading: true }));
       const res = await fetchData(
-        "http://localhost:3000/api/auth/updateProfilePic",
+        `${ENDPOINT_API}/auth/updateProfilePic`,
         {
           method: "POST",
           body: JSON.stringify({

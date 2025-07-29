@@ -1,10 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { ENDPOINT_API } from "../../lib/utils";
 
 export const checkAuthThunk = createAsyncThunk(
   "auth/checkAuthThunk",
   async (req, thunkAPI) => {
     try {
-      const res = await fetch("http://localhost:3000/api/auth/check", {
+      const res = await fetch(`${ENDPOINT_API}/auth/check`, {
         method: 'GET',
         credentials: 'include'
       });

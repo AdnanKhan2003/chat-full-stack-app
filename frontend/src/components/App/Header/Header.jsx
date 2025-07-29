@@ -26,6 +26,7 @@ import ModalPortal from "../../../ui/Modal/Modal";
 import { useRef } from "react";
 import ProfilePicSelection from "../ProfilePicSelection/ProfilePicSelection";
 import { myChatThunk } from "../../../store/thunks/myChatThunk ";
+import { ENDPOINT_API } from "../../../lib/utils";
 
 const Header = () => {
   const [showModal, setShowModal] = useState(false);
@@ -49,7 +50,7 @@ const Header = () => {
   const handleLogout = async (e) => {
     e.preventDefault();
 
-    const res = await fetchData("http://localhost:3000/api/auth/logout", {
+    const res = await fetchData(`${ENDPOINT_API}/auth/logout`, {
       method: "POST",
     });
 
