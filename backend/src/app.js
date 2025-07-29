@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import http from "http";
+import path from "path";
 import { Server } from "socket.io";
 
 import { connectDB } from "./lib/database.js";
@@ -23,6 +24,7 @@ const io = new Server(server, {
   },
 });
 const PORT = process.env.PORT || 3000;
+const __dirname = path.resolve();
 
 app.use(
   cors({
@@ -40,6 +42,14 @@ app.use("/api/message", messageRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
+
+if(process.env.ENV_MODE == 'production') {
+  app.use(express.static(path.join(__dirname, '../frontend/dist/')));
+
+  app.use('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend', 'dist', 'index.html'));
+  });
+}
 
 io.on("connection", (socket) => {
   console.log(`Client connected with Socket ID: ${socket.id}`);
