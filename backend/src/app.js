@@ -36,13 +36,6 @@ app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
 
 
-app.use("/api/auth", authRoutes);
-app.use("/api/chat", chatRoutes);
-app.use("/api/message", messageRoutes);
-
-app.use(notFound);
-app.use(errorHandler);
-
 if(process.env.NODE_ENV == 'production') {
   app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
@@ -52,6 +45,12 @@ if(process.env.NODE_ENV == 'production') {
 }
 
 
+app.use("/api/auth", authRoutes);
+app.use("/api/chat", chatRoutes);
+app.use("/api/message", messageRoutes);
+
+app.use(notFound);
+app.use(errorHandler);
 
 io.on("connection", (socket) => {
   console.log(`Client connected with Socket ID: ${socket.id}`);
