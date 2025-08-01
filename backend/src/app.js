@@ -51,6 +51,8 @@ if(process.env.NODE_ENV == 'production') {
   });
 }
 
+
+
 io.on("connection", (socket) => {
   console.log(`Client connected with Socket ID: ${socket.id}`);
 
@@ -97,5 +99,6 @@ io.on("connection", (socket) => {
     socket.leave(socket.userId);
   });
 });
+
 
 server.listen(PORT, () => connectDB());
