@@ -1,19 +1,19 @@
-import { Outlet, useLocation } from 'react-router';
+import { Outlet, useLocation } from "react-router";
 
-import App from '../../App';
-import styles from './Layout.module.css';
-import SearchBox from '../../components/App/SearchBox/SearchBox';
+import App from "../../App";
+import styles from "./Layout.module.css";
+import SearchBox from "../../components/App/SearchBox/SearchBox";
 
 const Layout = () => {
-    const location = useLocation();
+  const location = useLocation();
 
   return (
     <>
-        <App />
-        {location.pathname === '/search' && <SearchBox />}
-        <Outlet />
+      <App />
+      {location.pathname === "/search" && <SearchBox />}
+      <Outlet />
     </>
-  )
-}
+  );
+};
 
-export default Layout
+export default Layout;

@@ -1,7 +1,6 @@
-import { AnimatePresence, motion } from "motion/react";
+import { motion } from "motion/react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { BsSend } from "react-icons/bs";
 import { IoEye } from "react-icons/io5";
 import { IoArrowBackOutline } from "react-icons/io5";
 import { useEffect, useRef, useState } from "react";
@@ -13,7 +12,6 @@ import styles from "./ChatMessages.module.css";
 import ModalPortal from "../../../ui/Modal/Modal.jsx";
 import GroupChatForm from "../GroupChatForm/GroupChatForm.jsx";
 import { myChatThunk } from "../../../store/thunks/myChatThunk .js";
-import groupChatImg from "/images/group_chat.png";
 import {
   handleGoToChats,
   handlePushLatestMessage,
@@ -21,20 +19,17 @@ import {
 import ChatMessageInput from "./ChatMessageInput/ChatMessageInput.jsx";
 import { useFetch } from "../../../hooks/useFetch.js";
 import { handleAddNotification } from "../../../store/slices/notificationSlice.js";
-import { setSocket } from "../../../store/slices/socketSlice.js";
 import { ENDPOINT, ENDPOINT_API } from "../../../lib/utils.js";
-// let socket;
 
 const ChatMessages = () => {
   const socketRef = useRef();
-  const { activeChat, myChats, goToChat } = useSelector((state) => state.chats);
+  const { activeChat, goToChat } = useSelector((state) => state.chats);
   const { notifications } = useSelector((state) => state.notifications);
   const { user } = useSelector((state) => state.isAuth);
 
   const [socketConnected, setSocketConnected] = useState(false);
 
   const [draft, setDraft] = useState({});
-  // const [messages, setMessages] = useState([]);
   const [messages, setMessages] = useState({});
 
   const [showModal, setShowModal] = useState(false);
@@ -45,7 +40,7 @@ const ChatMessages = () => {
   const bottomRef = useRef();
 
   const dispatch = useDispatch();
-  const { fetchData, data, error, isLoading } = useFetch();
+  const { fetchData } = useFetch();
 
   const loggedUserId = user?._id;
   const chatPartner =
@@ -57,7 +52,6 @@ const ChatMessages = () => {
     socketRef.current = io(ENDPOINT);
     socketRef.current.emit("setup", user);
     socketRef.current.on("connected", () => setSocketConnected(true));
-    // dispatch(setSocket(socketRef.current));
 
     return () => socketRef.current.disconnect();
   }, []);
@@ -76,7 +70,6 @@ const ChatMessages = () => {
         );
 
         if (!notificationAlreadyExists) {
-          console.log("q", newMessage);
           dispatch(handleAddNotification(newMessage));
         }
       } else {
@@ -87,7 +80,6 @@ const ChatMessages = () => {
             newMessage,
           ],
         }));
-        console.log(activeChat._id, newMessage.content);
 
         dispatch(
           handlePushLatestMessage({
@@ -104,19 +96,6 @@ const ChatMessages = () => {
       socketRef.current.off("message received", handleMessageReceived);
     };
   }, [notifications, messages, activeChat?._id]);
-
-  // useEffect(() => {
-  //   const handleJoinChat = async (chatId) => {
-  //     console.log('chatmessage wala chatId', chatId);
-
-  //     dispatch(myChatThunk());
-  //   };
-
-  //   socketRef.current.on('join chat', handleJoinChat);
-  //   return () => {
-  //     socketRef.current.off('join chat', handleJoinChat);
-  //   };
-  // }, [socketRef.current, activeChat._id]);
 
   useEffect(() => {
     const container = bottomRef.current;
@@ -136,7 +115,6 @@ const ChatMessages = () => {
     const res = await fetchData(`${ENDPOINT_API}/message`, {
       method: "POST",
       body: JSON.stringify({
-        // chatId: activeChat.users.find(user => user._id !== loggedUserId)._id,
         chatId: activeChat._id,
         content: draft[activeChat._id],
       }),
@@ -144,15 +122,12 @@ const ChatMessages = () => {
 
     if (res.result) {
       socketRef.current.emit("new message", res.result);
-      // fetchMessages();
-      console.log("send message", res.result);
 
       setMessages((prevMsg) => ({
         ...prevMsg,
         [activeChat._id]: [...(prevMsg[activeChat._id] || []), res.result],
       }));
 
-      console.log("wth", res.result);
       dispatch(
         handlePushLatestMessage({
           chatId: activeChat._id,
@@ -183,12 +158,9 @@ const ChatMessages = () => {
   };
 
   const fetchMessages = async () => {
-    const res = await fetchData(
-      `${ENDPOINT_API}/message/${activeChat._id}`,
-      {
-        method: "GET",
-      }
-    );
+    const res = await fetchData(`${ENDPOINT_API}/message/${activeChat._id}`, {
+      method: "GET",
+    });
 
     socketRef.current.emit("join chat", activeChat._id);
 
@@ -240,12 +212,22 @@ const ChatMessages = () => {
                 className={`${styles.btn__back}`}
               />
               <div className={`${styles.chatpartner__name__container}`}>
-                {activeChat && !activeChat.isGroupChat && <img className={`${styles.chat__profile__pic__mobile}`} src={chatPartner.profilePic} />}
+                {activeChat && !activeChat.isGroupChat && (
+                  <img
+                    className={`${styles.chat__profile__pic__mobile}`}
+                    src={chatPartner.profilePic}
+                  />
+                )}
                 <motion.h3
-                initial={{ transform: 'translateX(-20px)', opacity: 0 }}
-                animate={{ transform: 'translateX(0px)', opacity: 1, transition: { duration: .5 } }}
-                exit={{ transform: 'translateX(-20px)', opacity: 0 }}
-                 className="message__receiver">
+                  initial={{ transform: "translateX(-20px)", opacity: 0 }}
+                  animate={{
+                    transform: "translateX(0px)",
+                    opacity: 1,
+                    transition: { duration: 0.5 },
+                  }}
+                  exit={{ transform: "translateX(-20px)", opacity: 0 }}
+                  className="message__receiver"
+                >
                   {activeChat.isGroupChat
                     ? activeChat.chatName
                     : chatPartner?.name}

@@ -20,23 +20,19 @@ const GroupChatEditForm = ({
   userSearchResults,
   onSuccess,
 }) => {
-  const { activeChat, chats, myChats } = useSelector((state) => state.chats);
-  const { user } = useSelector((state) => state.isAuth);
+  const { activeChat } = useSelector((state) => state.chats);
   const [chatNameInput, setChatNameInput] = useState(activeChat.chatName || "");
-  const { fetchData, data, isLoading, error } = useFetch();
+  const { fetchData } = useFetch();
 
-  
   const handleEditGroupChatName = async () => {
-
     const res = await fetchData(`${ENDPOINT_API}/chat/rename`, {
       method: "PUT",
       body: JSON.stringify({ chatId: activeChat._id, chatName: chatNameInput }),
     });
 
-    
     if (res) {
       setChatNameInput(res.chatName);
-      
+
       onSuccess();
     } else {
       showToast({
@@ -59,11 +55,17 @@ const GroupChatEditForm = ({
         {Array.isArray(activeChat.users) &&
           activeChat.users.length > 0 &&
           activeChat.users.map((user) => {
-            const isAdmin = activeChat.groupAdmin._id.toString() === user._id.toString();
-            
-            
+            const isAdmin =
+              activeChat.groupAdmin._id.toString() === user._id.toString();
+
             return (
-              <UserBadge key={user._id} user={user} isAdmin={isAdmin} onRemove={onRemoveUser} edit={true} />
+              <UserBadge
+                key={user._id}
+                user={user}
+                isAdmin={isAdmin}
+                onRemove={onRemoveUser}
+                edit={true}
+              />
             );
           })}
       </div>
@@ -93,7 +95,14 @@ const GroupChatEditForm = ({
             {userSearchResults &&
               userSearchResults.length > 0 &&
               userSearchResults.map((user) => {
-                return <User key={user._id} editUser={true} data={user} onSelect={onAddUser} />;
+                return (
+                  <User
+                    key={user._id}
+                    editUser={true}
+                    data={user}
+                    onSelect={onAddUser}
+                  />
+                );
               })}
           </div>
         </div>

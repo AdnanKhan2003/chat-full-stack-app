@@ -15,8 +15,7 @@ const SearchBox = () => {
   const [userName, setUserName] = useState("");
   const [isVisible, setIsVisible] = useState(false);
   const [hasSearched, setHasSearched] = useState();
-  const { fetchData, data, isLoading, error } = useFetch();
-  const { chats } = useSelector((state) => state.chats);
+  const { fetchData, data, isLoading } = useFetch();
 
   const inputRef = useRef();
   const searchBoxEle = useRef();
@@ -35,9 +34,6 @@ const SearchBox = () => {
     const res = await fetchData(
       `${ENDPOINT_API}/auth/users?search=${userName.toLowerCase()}`
     );
-
-    // dispatch()
-    console.log(res);
   };
 
   const accessChat = async (user) => {
@@ -65,8 +61,6 @@ const SearchBox = () => {
     inputRef.current?.focus();
 
     setIsVisible(true);
-    // const timeout = setTimeout(() => {
-    // }, 10);
 
     const handleClickOutside = (e) => {
       if (!searchBoxEle.current.contains(e.target)) {
@@ -76,17 +70,16 @@ const SearchBox = () => {
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      // clearTimeout(timeout);
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
   return (
     <motion.div
-    initial={{ opacity: 0, x: -15 }}
-    animate={{ opacity: 1, x: 0 }}
-    exit={{ opacity: 0, x: 15 }}
-    transition={{ type: "spring", duration: 0.35 }}
+      initial={{ opacity: 0, x: -15 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: 15 }}
+      transition={{ type: "spring", duration: 0.35 }}
       ref={searchBoxEle}
       className={`${styles.searchbox__container} ${
         isVisible ? styles.show : ""

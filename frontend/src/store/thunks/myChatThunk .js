@@ -16,7 +16,7 @@ export const myChatThunk = createAsyncThunk(
       if (!res.ok) throw new Error("Failed to Access/Create Chat!");
 
       const resData = await res.json();
-    
+
       return resData;
     } catch (err) {
       return thunkAPI.rejectWithValue(err.message);

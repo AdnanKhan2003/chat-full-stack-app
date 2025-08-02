@@ -7,7 +7,6 @@ import {
   handleGoToChat,
 } from "../../../store/slices/chatSlice";
 import { useEffect } from "react";
-import { useFetch } from "../../../hooks/useFetch";
 import { myChatThunk } from "../../../store/thunks/myChatThunk ";
 import { useState } from "react";
 import ModalPortal from "../../../ui/Modal/Modal";
@@ -16,12 +15,9 @@ import { AnimatePresence } from "motion/react";
 
 const Sidebar = () => {
   const dispatch = useDispatch();
-  const { fetchData, data, isLoading: fetchIsLoading, error } = useFetch();
   const { myChats, goToChat, refetchFlag, isLoading } = useSelector(
     (state) => state.chats
   );
-  const w = useSelector((state) => state.chats);
-  const { user } = useSelector((state) => state.isAuth);
   const { activeChat } = useSelector((state) => state.chats);
   const [showModal, setShowModal] = useState(false);
 

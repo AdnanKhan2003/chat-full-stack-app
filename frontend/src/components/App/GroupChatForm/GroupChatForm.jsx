@@ -12,7 +12,6 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   handleAddToMyChats,
   handleAddUserToGroup,
-  handlePushNotificationChat,
   handleRemoveUserFromGroup as handleRemoveUserFromGroupAction,
   triggerRefetch,
 } from "../../../store/slices/chatSlice";
@@ -37,11 +36,11 @@ const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
   useEffect(() => {
     const timeout = setTimeout(() => {
       handleSearchUsers();
-    }, 300); 
-    
+    }, 300);
+
     return () => {
       clearTimeout(timeout);
-    }
+    };
   }, [usersInput]);
 
   const handleCreateGroup = async () => {
@@ -58,8 +57,6 @@ const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
       });
       return;
     }
-
-    console.log(chatName, users);
 
     const res = await fetchData(`${ENDPOINT_API}/chat/group`, {
       method: "POST",
@@ -78,28 +75,21 @@ const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
       return;
     }
 
-    console.log("gcf", res);
-
     setUsersInput("");
 
     onClose(false);
     onSuccess(res);
     dispatch(handleAddToMyChats(res));
-    // dispatch(handlePushNotificationChat(res._id));
     navigate("/");
   };
 
   const handleEditGroupUsers = async (user) => {
-    console.log(user, activeChat);
-
     const res = await fetchData(`${ENDPOINT_API}/chat/groupadd`, {
       method: "PUT",
       body: JSON.stringify({ chatId: activeChat._id, userId: user._id }),
     });
-    console.log("ADDkia", res);
 
     if (res) {
-      console.log("add user", res);
       showToast({
         type: "success",
         title: "User Added!",
@@ -110,8 +100,6 @@ const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
       });
       dispatch(handleAddUserToGroup(res));
     } else if (res == null) {
-      console.log(res);
-
       showToast({
         type: "error",
         title: "Only Admin Can Add Users!",
@@ -133,10 +121,6 @@ const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
   };
 
   const handleAddUsers = (userToAdd, editUser = false) => {
-    console.log("editUser");
-
-    console.log(editUser);
-
     if (editUser) {
       handleEditGroupUsers(userToAdd);
       return;
@@ -159,11 +143,9 @@ const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
     });
     setUsersInput("");
     setUserSearchResults([]);
-    console.log(users);
   };
 
   const handleRemoveUser = (id, editUser = false) => {
-    console.log(id, activeChat.groupAdmin._id);
     if (editUser) {
       if (user._id !== activeChat.groupAdmin._id) {
         showToast({
@@ -191,16 +173,12 @@ const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
   };
 
   const handleRemoveUserFromGroup = async (id) => {
-    console.log("w");
-
     const res = await fetchData(`${ENDPOINT_API}/chat/groupremove`, {
       method: "PUT",
       body: JSON.stringify({ chatId: activeChat._id, userId: id }),
     });
-    console.log("w", res);
 
     if (res) {
-      console.log("remove user", res);
       if (res.message == "You Left Group") {
         onClose();
         showToast({
@@ -222,7 +200,6 @@ const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
           position: "top",
         });
         dispatch(handleRemoveUserFromGroupAction(res));
-        console.log(res);
       }
     } else if (res == null) {
       showToast({
@@ -254,35 +231,12 @@ const GroupChatForm = ({ onClose, onSuccess, edit = false }) => {
       return;
     }
 
-    const res = await fetchData(
-      `${ENDPOINT_API}/auth/users?search=${value}`,
-      {
-        method: "GET",
-      }
-    );
+    const res = await fetchData(`${ENDPOINT_API}/auth/users?search=${value}`, {
+      method: "GET",
+    });
 
     setUserSearchResults(res);
   };
-  // const handleSearchUsers = async (value) => {
-  //   value = value.toLowerCase();
-
-  //   if (!value.trim()) {
-  //     setUserSearchResults([]);
-  //     setUsersInput("");
-  //     return;
-  //   }
-
-  //   const res = await fetchData(
-  //     `http://localhost:3000/api/auth/users?search=${value}`,
-  //     {
-  //       method: "GET",
-  //     }
-  //   );
-
-  //   setUsersInput((prevState) => value);
-
-  //   setUserSearchResults(res);
-  // };
 
   if (edit) {
     return (

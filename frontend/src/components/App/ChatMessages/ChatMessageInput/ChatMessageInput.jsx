@@ -46,32 +46,23 @@ const ChatMessageInput = ({
   }, [socket, activeChat?._id]);
 
   const handleChangeInput = (val) => {
-    console.log('a');
-    
     onDraftChange(val);
-    console.log('b');
-
 
     if (!isCurrentUsertyping) {
       setIsCurrentUsertyping(true);
       socket.emit("start typing", activeChat._id);
-    console.log('c: under if');
-  }
-  
-    // const timeWhenTypingStart = new Date().getTime();
+    }
+
     const timer = 1500;
 
     if (typingTimeoutRef.current) {
       clearTimeout(typingTimeoutRef.current);
-    console.log('d: under clearTimeout');
     }
 
     typingTimeoutRef.current = setTimeout(() => {
-     
-        socket.emit("stop typing", activeChat._id);
-        console.log("f: did it");
-        setIsCurrentUsertyping(false);
-        setIsChatPartnertyping(false);
+      socket.emit("stop typing", activeChat._id);
+      setIsCurrentUsertyping(false);
+      setIsChatPartnertyping(false);
     }, timer);
   };
 

@@ -1,5 +1,3 @@
-import { FaRegEye } from "react-icons/fa";
-
 import styles from "./Signup.module.css";
 import { useState } from "react";
 import { compareString, ENDPOINT_API, isEmail, isEmpty } from "../../lib/utils";
@@ -7,7 +5,6 @@ import Input from "../../components/Input/Input.jsx";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { checkAuthThunk } from "../../store/thunks/authThunk.js";
-import Toast from "../../ui/Toast/Toast.jsx";
 import { showToast } from "../../lib/toast.js";
 import { useFetch } from "../../hooks/useFetch";
 import Spinner from "../../ui/Spinner/Spinner";
@@ -111,8 +108,6 @@ const Signup = () => {
     e.preventDefault();
 
     const isValid = handleValidation();
-    console.log(isValid);
-    console.log(formInputData);
 
     if (!isValid) {
       showToast({
@@ -225,7 +220,17 @@ const Signup = () => {
               className={`${styles.preview__image}`}
               alt="Preview"
             />
-            <button onClick={() => setFormInputData(prevState => ({ ...prevState, profilePic: "" }))} className={`${styles.btn__preview}`}>X</button>
+            <button
+              onClick={() =>
+                setFormInputData((prevState) => ({
+                  ...prevState,
+                  profilePic: "",
+                }))
+              }
+              className={`${styles.btn__preview}`}
+            >
+              X
+            </button>
           </div>
         )}
         <div className={`${styles.btn__container}`}>

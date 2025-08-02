@@ -1,11 +1,10 @@
-import { FaRegEye } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import styles from "./Login.module.css";
 import { useState } from "react";
-import { compareString, ENDPOINT_API, isEmail, isEmpty } from "../../lib/utils";
+import { ENDPOINT_API, isEmail, isEmpty } from "../../lib/utils";
 import Input from "../../components/Input/Input.jsx";
-import Spinner from '../../ui/Spinner/Spinner';
+import Spinner from "../../ui/Spinner/Spinner";
 import { checkAuthThunk } from "../../store/thunks/authThunk.js";
 import { showToast } from "../../lib/toast.js";
 import { useFetch } from "../../hooks/useFetch.js";
@@ -30,7 +29,7 @@ const Login = () => {
 
   const handleChange = (id, e) => {
     setErrors((prevState) => ({ ...prevState, [id]: "" }));
-    
+
     setFormInputData((prevState) => ({ ...prevState, [id]: e.target.value }));
   };
 
@@ -64,14 +63,13 @@ const Login = () => {
     e.preventDefault();
 
     const isValid = handleValidation();
-    console.log(isValid, formInputData);
 
     const res = await fetchData(`${ENDPOINT_API}/auth/login`, {
-      method: 'POST',
-      body: JSON.stringify(formInputData)
+      method: "POST",
+      body: JSON.stringify(formInputData),
     });
 
-    if(res) {
+    if (res) {
       dispatch(checkAuthThunk());
       showToast({
         type: "success",
@@ -79,35 +77,35 @@ const Login = () => {
         message: "We're Glad that you're here!",
         duration: 3000,
         show: true,
-        position: 'top'
+        position: "top",
       });
-      console.log(data);
 
       navigate("/");
     } else {
       showToast({
         type: "error",
         title: "Login Failed!",
-        message: "Please Enter Valid Credentials or Signup if You Don't Already Have an Account!",
+        message:
+          "Please Enter Valid Credentials or Signup if You Don't Already Have an Account!",
         duration: 3000,
         show: true,
-        position: 'top'
+        position: "top",
       });
     }
   };
 
   const getGuestCredentials = () => {
-    setErrors(prevState => ({
+    setErrors((prevState) => ({
       email: "",
-      password: ""
+      password: "",
     }));
-    setFormInputData(prevState => {
+    setFormInputData((prevState) => {
       return {
-        email: 'guest@gmail.com',
-        password: 'guest1'
+        email: "guest@gmail.com",
+        password: "guest1",
       };
     });
-  }
+  };
 
   return (
     <div className={`${styles.login__form}`}>
@@ -155,7 +153,11 @@ const Login = () => {
           <button className={`${styles.btn__login}`} type="submit">
             {isLoading ? <Spinner /> : "Login"}
           </button>
-          <button onClick={getGuestCredentials} className={`${styles.btn__guest}`} type="button">
+          <button
+            onClick={getGuestCredentials}
+            className={`${styles.btn__guest}`}
+            type="button"
+          >
             Get Guest Login Credentials
           </button>
         </div>

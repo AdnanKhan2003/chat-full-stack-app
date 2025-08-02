@@ -143,7 +143,6 @@ export const addToGroup = async (req, res, next) => {
     }
 
     const userExists = chat.users.find(c => c._id.toString() === userId.toString())
-    console.log(chat.users, userExists);
     
 
     if(userExists){

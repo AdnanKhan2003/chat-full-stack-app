@@ -31,19 +31,15 @@ const ProfilePicSelection = forwardRef(({ loggedUser, onChange }, ref) => {
 
     reader.onloadend = async () => {
       const base64String = reader.result;
-      console.log(base64String);
 
       setPreview((prevState) => ({ ...prevState, isLoading: true }));
-      const res = await fetchData(
-        `${ENDPOINT_API}/auth/updateProfilePic`,
-        {
-          method: "POST",
-          body: JSON.stringify({
-            userId: user._id,
-            profilePic: base64String,
-          }),
-        }
-      );
+      const res = await fetchData(`${ENDPOINT_API}/auth/updateProfilePic`, {
+        method: "POST",
+        body: JSON.stringify({
+          userId: user._id,
+          profilePic: base64String,
+        }),
+      });
 
       if (res) {
         setPreview((prevState) => ({ pic: res.profilePic, isLoading: false }));
@@ -56,7 +52,6 @@ const ProfilePicSelection = forwardRef(({ loggedUser, onChange }, ref) => {
           show: true,
           position: "top",
         });
-        console.log(res);
       }
     };
 
@@ -66,7 +61,6 @@ const ProfilePicSelection = forwardRef(({ loggedUser, onChange }, ref) => {
   return (
     <div className={`${styles.avatar__container}`}>
       {preview.isLoading && <Spinner />}
-      {console.log("preview.pic", preview.pic)}
       <img
         src={preview.pic}
         className={`${styles.single__chat__profile__pic}`}

@@ -1,42 +1,40 @@
-import { createSlice } from '@reduxjs/toolkit'
-import { checkAuthThunk } from '../thunks/authThunk'
+import { createSlice } from "@reduxjs/toolkit";
+import { checkAuthThunk } from "../thunks/authThunk";
 
 const initialState = {
   user: null,
   isLoading: false,
-  error: null
-}
+  error: null,
+};
 
 export const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
     handleUpdateProfilePic: function (state, action) {
-      if(state.user) {
+      if (state.user) {
         state.user.profilePic = action.payload;
       }
-    }
+    },
   },
   extraReducers: (builder) => {
-    builder.addCase(checkAuthThunk.pending, (state) => {
+    builder
+      .addCase(checkAuthThunk.pending, (state) => {
         state.isLoading = true;
         state.error = null;
-    })
-    .addCase(checkAuthThunk.fulfilled, (state, action) => {
-      
+      })
+      .addCase(checkAuthThunk.fulfilled, (state, action) => {
         state.user = action.payload;
         state.isLoading = false;
-    })
-    .addCase(checkAuthThunk.rejected, (state, action) => {
-      
-      state.user = null;
-      state.error = action.payload;      
+      })
+      .addCase(checkAuthThunk.rejected, (state, action) => {
+        state.user = null;
+        state.error = action.payload;
         state.isLoading = false;
-    })
-  }
-})
+      });
+  },
+});
 
-// Action creators are generated for each case reducer function
-export const { handleUpdateProfilePic } = authSlice.actions
+export const { handleUpdateProfilePic } = authSlice.actions;
 
-export default authSlice.reducer
+export default authSlice.reducer;

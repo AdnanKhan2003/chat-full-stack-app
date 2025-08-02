@@ -1,9 +1,12 @@
 import { FaRegEye } from "react-icons/fa";
+import { GoEyeClosed } from "react-icons/go";
 
 import styles from "./Input.module.css";
 
 const Input = ({ label, errors, onChange, ...props }) => {
   if (props.type === "password") {
+    const isVisible = props.isPasswordVisible[props.name];
+
     return (
       <div className={`${styles.input__unit}`}>
         <label htmlFor={label.toLowerCase()}>{label}</label>
@@ -13,19 +16,28 @@ const Input = ({ label, errors, onChange, ...props }) => {
             name={props.name}
             type={!props.isPasswordVisible[props.name] ? "password" : "text"}
             value={props.value}
-            // onChange={(e) => handleChange("password", e)}
             onChange={(e) => onChange(props.name, e)}
           />
 
-          <FaRegEye
-            onClick={(e) =>
-              // setIsPasswordVisible((prevState) => ({
-              props.onClick((prevState) => ({
-                ...prevState,
-                [props.name]: !prevState[props.name],
-              }))
-            }
-          />
+          {isVisible ? (
+            <GoEyeClosed
+              onClick={(e) =>
+                props.onClick((prevState) => ({
+                  ...prevState,
+                  [props.name]: !prevState[props.name],
+                }))
+              }
+            />
+          ) : (
+            <FaRegEye
+              onClick={(e) =>
+                props.onClick((prevState) => ({
+                  ...prevState,
+                  [props.name]: !prevState[props.name],
+                }))
+              }
+            />
+          )}
         </div>
         {errors[props.name] && (
           <p className={`${styles.error__message}`}>{errors[props.name]}</p>
@@ -35,7 +47,6 @@ const Input = ({ label, errors, onChange, ...props }) => {
   }
 
   if (props.type === "file") {
-    
     return (
       <div className={`${styles.input__unit}`}>
         <label>{label}</label>
@@ -44,7 +55,6 @@ const Input = ({ label, errors, onChange, ...props }) => {
           name={props.name}
           accept={props.accept}
           type={props.type}
-          // onChange={(e) => handleChange("profilePic", e)}
           onChange={(e) => onChange(props.name, e)}
         />
       </div>

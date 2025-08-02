@@ -15,21 +15,18 @@ const Chat = ({ chat, onSelect }) => {
   const chatPartner = chat.users.find((user) => user._id !== loggedUserId);
 
   const isActive = activeChat?._id === chat._id;
-  const groupChatImage =
-    chat.isGroupChat &&
-    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
 
   return (
     <motion.div
       initial={{ y: -15 }}
       animate={{
-        y: 0
+        y: 0,
       }}
-      transition= {{
+      transition={{
         type: "spring",
         stiffness: 100,
         damping: 15,
-        duration: .5,
+        duration: 0.5,
       }}
       onClick={() => onSelect(chat)}
       className={`${styles.chat__container} ${

@@ -6,16 +6,15 @@ export const useFetch = () => {
   const [error, setError] = useState(null);
 
   const fetchData = async (url, options = {}) => {
-      setIsLoading(true);
-      setError(null);
-
+    setIsLoading(true);
+    setError(null);
 
     try {
       const res = await fetch(url, {
         ...options,
         headers: {
           "Content-Type": "application/json",
-          ...options.headers
+          ...options.headers,
         },
         credentials: "include",
       });
@@ -35,8 +34,7 @@ export const useFetch = () => {
     } finally {
       setIsLoading(false);
     }
-
   };
 
-  return { data, error, isLoading, fetchData }
+  return { data, error, isLoading, fetchData };
 };

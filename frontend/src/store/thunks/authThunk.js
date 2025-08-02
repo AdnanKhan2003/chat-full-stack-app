@@ -6,21 +6,20 @@ export const checkAuthThunk = createAsyncThunk(
   async (req, thunkAPI) => {
     try {
       const res = await fetch(`${ENDPOINT_API}/auth/check`, {
-        method: 'GET',
-        credentials: 'include'
+        method: "GET",
+        credentials: "include",
       });
 
-      if(!res.ok) {
+      if (!res.ok) {
         throw new Error("Not Authenticated!");
       }
 
       const data = await res.json();
-      
+
       return data;
     } catch (err) {
-        console.log(err);
+      console.log(err);
       return thunkAPI.rejectWithValue(err.response.data);
-      
     }
   }
 );

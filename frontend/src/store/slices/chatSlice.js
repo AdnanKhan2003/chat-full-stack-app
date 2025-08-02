@@ -33,58 +33,53 @@ export const chatSlice = createSlice({
     removeActiveChat: function (state, action) {
       state.activeChat = "";
     },
-    handleAddToMyChats: function(state, action){
-      const chat = { ...action.payload, createdAt: action.payload.createdAt || new Date().toISOString() }
-      console.log('acc', chat);
+    handleAddToMyChats: function (state, action) {
+      const chat = {
+        ...action.payload,
+        createdAt: action.payload.createdAt || new Date().toISOString(),
+      };
 
-      const chatIndex = state.myChats.find(c => c._id.toString() === chat._id.toString());
+      const chatIndex = state.myChats.find(
+        (c) => c._id.toString() === chat._id.toString()
+      );
 
-      if(chatIndex !== -1) {
+      if (chatIndex !== -1) {
         state.myChats.splice(chatIndex, 1);
       }
-      
+
       state.myChats.unshift(chat);
     },
-    triggerRefetch: function(state, action) {
+    triggerRefetch: function (state, action) {
       state.refetchFlag = action.payload;
     },
     handlePushNotificationChat: function (state, action) {
       const chatId = action.payload.chat._id;
-      console.log('chatId', chatId);
-      
-      const chatIndex = state.myChats.findIndex(c => c._id.toString() === chatId.toString());
-      console.log('chatIndex', chatIndex);
 
-      if(chatIndex == -1) {
+      const chatIndex = state.myChats.findIndex(
+        (c) => c._id.toString() === chatId.toString()
+      );
+
+      if (chatIndex == -1) {
         state.activeChat = action.payload.chat;
-        console.log('gggggg', action.payload.chat);
-        
         return;
-      };
-      // if(chatIndex == -1) return;
+      }
 
       const latestNotificationMessage = state.myChats[chatIndex];
-      console.log('latestNotificationMessage', latestNotificationMessage);
 
-      if(!latestNotificationMessage) return;
+      if (!latestNotificationMessage) return;
 
-      if(latestNotificationMessage.latestMessage) {
-        latestNotificationMessage.latestMessage.createdAt = new Date().toISOString();
-        console.log('latestNotificationMessage.latestMessage.createdAt', latestNotificationMessage.latestMessage.createdAt);
-        
+      if (latestNotificationMessage.latestMessage) {
+        latestNotificationMessage.latestMessage.createdAt =
+          new Date().toISOString();
       }
 
       state.myChats = [
-          latestNotificationMessage,
-        ...state.myChats.filter(c => c._id.toString() !== chatId.toString()),
-       ]
-       console.log('w');
-       
+        latestNotificationMessage,
+        ...state.myChats.filter((c) => c._id.toString() !== chatId.toString()),
+      ];
     },
     handlePushLatestMessage: function (state, action) {
       const { chatId, latestMessage } = action.payload;
-      console.log(chatId, latestMessage);
-      
 
       const chatIndex = state.myChats.findIndex(
         (c) => c._id.toString() === chatId.toString()
@@ -100,15 +95,12 @@ export const chatSlice = createSlice({
         state.myChats.splice(chatIndex, 1);
         state.myChats.unshift(updatedChat);
 
-        console.log('l', latestMessage);
-        console.log('transforemed', updatedChat);
-        
-        if(state.activeChat && state.activeChat._id.toString() === chatId.toString()){
+        if (
+          state.activeChat &&
+          state.activeChat._id.toString() === chatId.toString()
+        ) {
           state.activeChat = updatedChat;
         }
-
-        console.log('updatedChat', updatedChat, ...state.myChats);
-        
       }
     },
     handleAddUsers: function (state, action) {

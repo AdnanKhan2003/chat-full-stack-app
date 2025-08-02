@@ -5,15 +5,13 @@ import { SlLogout } from "react-icons/sl";
 import { CgProfile } from "react-icons/cg";
 
 import { FaBell } from "react-icons/fa";
-import { MdEdit } from "react-icons/md";
 
 import styles from "./Header.module.css";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { checkAuthThunk } from "../../../store/thunks/authThunk";
 import {
   handleActiveChat,
-  handlePushLatestMessage,
   handlePushNotificationChat,
   removeActiveChat,
   triggerRefetch,
@@ -43,7 +41,7 @@ const Header = () => {
   const [showProfileOptions, setShowProfileOptions] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
 
-  const { fetchData, data, isLoading, error } = useFetch();
+  const { fetchData } = useFetch();
 
   const loggedUser = user;
 
@@ -121,9 +119,9 @@ const Header = () => {
           </div>
 
           <div className={`${styles.nav__right}`}>
-            <div 
-            onMouseEnter={() => setShowNotifications(true)}
-            onMouseLeave={() => setShowNotifications(false)}
+            <div
+              onMouseEnter={() => setShowNotifications(true)}
+              onMouseLeave={() => setShowNotifications(false)}
             >
               <FaBell
                 onClick={() => setShowNotifications((prev) => !prev)}
@@ -158,9 +156,6 @@ const Header = () => {
                             (c) => c._id == notification.chat._id
                           );
 
-                          console.log("header handleNot", activeChat);
-                          console.log(activeChat);
-
                           if (!matchChat) {
                             const result = await dispatch(myChatThunk);
                             if (myChatThunk.fulfilled.match(result)) {
@@ -177,15 +172,12 @@ const Header = () => {
                           } else {
                             dispatch(handleActiveChat(notification.chat));
                           }
-                          console.log("x", activeChat);
 
                           dispatch(
                             handleRemoveNotificationById(notification._id)
                           );
-                          console.log("y", notification, matchChat, activeChat);
                           dispatch(triggerRefetch(true));
                           dispatch(handlePushNotificationChat(notification));
-                          console.log("z");
                         };
 
                         return (
@@ -212,8 +204,8 @@ const Header = () => {
               </AnimatePresence>
             </div>
             <div
-            onMouseEnter={() => setShowProfileOptions(true)}
-            onMouseLeave={() => setShowProfileOptions(false)}
+              onMouseEnter={() => setShowProfileOptions(true)}
+              onMouseLeave={() => setShowProfileOptions(false)}
             >
               <img
                 onClick={() => setShowProfileOptions((prevState) => !prevState)}
