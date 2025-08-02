@@ -34,7 +34,7 @@ export const postSignup = async (req, res, next) => {
   try {
     let uploadProfileUrl = "";
 
-    if (profilePic) {
+    if (profilePic && profilePic.trim() !== "") {
       const uploadResult = await cloudinary.uploader.upload(profilePic, {
         folder: "profile__pics",
       });
@@ -49,7 +49,7 @@ export const postSignup = async (req, res, next) => {
       name,
       email,
       password: hashedPassword,
-      profilePic: uploadProfileUrl,
+      profilePic: uploadProfileUrl || undefined,
     });
 
     const result = await newUser.save();

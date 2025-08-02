@@ -207,6 +207,7 @@ const Header = () => {
               onMouseEnter={() => setShowProfileOptions(true)}
               onMouseLeave={() => setShowProfileOptions(false)}
             >
+              {console.log(profilePic, user.profilePic)}
               <img
                 onClick={() => setShowProfileOptions((prevState) => !prevState)}
                 className={`${styles.profile__pic}`}
