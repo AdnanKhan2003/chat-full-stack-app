@@ -7,7 +7,6 @@ const UserBadge = ({ user, onRemove, isAdmin, edit = false }) => {
     <span className={`${styles.user} ${isAdmin ? styles.user__admin : ""}`}>
       <p className="user__name">{user.name}</p>
       <IoMdClose onClick={() => onRemove(user._id, edit)} />
-      {console.log("edit is ", edit)}
     </span>
   );
 };
